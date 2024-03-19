@@ -2,6 +2,7 @@
 using GeoQuest.DTOs;
 using GeoQuest.Middlewares.UserContext;
 using GeoQuest.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,17 @@ namespace GeoQuest.Controllers
 
             return Ok(response);
 
+        }
+
+
+
+        [Authorize]
+        [HttpGet]
+        [Route("Details")]
+        public async Task<ActionResult<AccountDto>> GetAccountDetails()
+        {
+            var details = await _accountService.GetAccount(_userContext.Id);
+            return Ok(details);
         }
 
 

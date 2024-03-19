@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using GeoQuest.Services;
 using GeoQuest.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GeoQuest.Controllers.Authentication
 {
@@ -48,6 +49,7 @@ namespace GeoQuest.Controllers.Authentication
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties()
             {
                 IsPersistent = true,
+                AllowRefresh = true,
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(45) // Set the expiration time here (e.g., 45 minutes from now)
             });
 
@@ -72,21 +74,21 @@ namespace GeoQuest.Controllers.Authentication
 
 
 
-        /*[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("restricted")]
         public string Restricted()
         {
-            return "Dobar si";
+            return "Ovdje moraš bit ulogiran";
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
-        [Route("admin")]
-        public string Admin()
+        [Route("teacher")]
+        public string Teacher()
         {
-            return "Dobar si admin";
+            return "Ovdje moraš biti teacher";
         }
-        */
+
     }
 }

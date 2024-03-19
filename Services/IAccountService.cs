@@ -8,5 +8,7 @@ namespace GeoQuest.Services
         public Task<int> createAccount(RegisterDto registerDto);
 
         public Task<Account?> GetAccountByEmail(string email);
+
+        public Task<AccountDto> GetAccount(int id);
     }
 }

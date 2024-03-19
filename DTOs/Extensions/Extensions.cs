@@ -1,4 +1,5 @@
-﻿using GeoQuest.Models;
+﻿using GeoQuest.Enums;
+using GeoQuest.Models;
 
 namespace GeoQuest.DTOs.Extensions
 {
@@ -14,7 +15,7 @@ namespace GeoQuest.DTOs.Extensions
                 FirstName = a.FirstName,
                 LastName = a.LastName,
                 Email = a.Email,
-                Role = a.Role,
+                Role = (UserRole)a.Role,
             };
         }
 

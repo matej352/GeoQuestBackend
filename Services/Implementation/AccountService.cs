@@ -1,4 +1,5 @@
 ﻿using GeoQuest.DTOs;
+using GeoQuest.DTOs.Extensions;
 using GeoQuest.Middlewares.UserContext;
 using GeoQuest.Models;
 using GeoQuest.Repositories;
@@ -56,6 +57,17 @@ namespace GeoQuest.Services.Implementation
         public async Task<Account?> GetAccountByEmail(string email)
         {
             return await _accountRepository.GetAccountByEmail(email);
+        }
+
+
+        public async Task<AccountDto> GetAccount(int id)
+        {
+            var account = await _accountRepository.GetAccount(id);
+            if (account == null)
+            {
+                throw new Exception($"Account does not exist!");
+            }
+            return account.AsAccountDto();
         }
 
 

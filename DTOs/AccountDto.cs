@@ -1,4 +1,6 @@
-﻿namespace GeoQuest.DTOs
+﻿using GeoQuest.Enums;
+
+namespace GeoQuest.DTOs
 {
     public class AccountDto
     {
@@ -12,6 +14,6 @@
 
         public string Email { get; set; }
 
-        public int Role { get; set; }
+        public UserRole Role { get; set; }
     }
 }
