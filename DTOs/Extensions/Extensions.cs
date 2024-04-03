@@ -19,7 +19,14 @@ namespace GeoQuest.DTOs.Extensions
             };
         }
 
-
+        public static SubjectDto AsSubjectDto(this Subject s)
+        {
+            return new SubjectDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+            };
+        }
 
 
     }

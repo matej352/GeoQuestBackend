@@ -20,6 +20,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "GeoQuestCookie";
         options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.HttpOnly = false;
         options.Events = new CookieAuthenticationEvents
         {
             OnRedirectToLogin = context =>
@@ -44,7 +45,7 @@ builder.Services.AddCors(c =>
         options.AllowCredentials()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("http://localhost:4200")
+            .WithOrigins("http://localhost:4200", "http://localhost:4300")
     // .AllowAnyOrigin()
     );
 });
@@ -68,11 +69,12 @@ builder.Services.AddDbContext<GeoQuestContext>(options =>
 // Services
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<ISubjectService, SubjectService>();
 
 // Repositories
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
-
+builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
 
 
 
