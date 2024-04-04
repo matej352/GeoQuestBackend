@@ -13,21 +13,21 @@ public partial class GeoQuestContext : DbContext
     {
     }
 
-    public virtual DbSet<Account> Accounts { get; set; }
+    public virtual DbSet<Account> Account { get; set; }
 
-    public virtual DbSet<Option> Options { get; set; }
+    public virtual DbSet<OptionAnswer> OptionAnswer { get; set; }
 
-    public virtual DbSet<OptionAnswer> OptionAnswers { get; set; }
+    public virtual DbSet<Options> Options { get; set; }
 
-    public virtual DbSet<Subject> Subjects { get; set; }
+    public virtual DbSet<Subject> Subject { get; set; }
 
-    public virtual DbSet<Task> Tasks { get; set; }
+    public virtual DbSet<Task> Task { get; set; }
 
-    public virtual DbSet<TaskInstance> TaskInstances { get; set; }
+    public virtual DbSet<TaskInstance> TaskInstance { get; set; }
 
-    public virtual DbSet<Test> Tests { get; set; }
+    public virtual DbSet<Test> Test { get; set; }
 
-    public virtual DbSet<TestInstance> TestInstances { get; set; }
+    public virtual DbSet<TestInstance> TestInstance { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,11 +35,9 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07B9D76B10");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC07406C9743");
 
-            entity.ToTable("Account");
-
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D10534105AC939").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053466283302").IsUnique();
 
             entity.Property(e => e.Email)
                 .IsRequired()
@@ -60,57 +58,55 @@ public partial class GeoQuestContext : DbContext
                 .IsRequired()
                 .IsUnicode(false);
 
-            entity.HasMany(d => d.Subjects).WithMany(p => p.Students)
+            entity.HasMany(d => d.Subject).WithMany(p => p.Student)
                 .UsingEntity<Dictionary<string, object>>(
                     "StudentSubject",
                     r => r.HasOne<Subject>().WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__StudentSu__Subje__35BCFE0A"),
+                        .HasConstraintName("FK__StudentSu__Subje__36B12243"),
                     l => l.HasOne<Account>().WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__StudentSu__Stude__36B12243"),
+                        .HasConstraintName("FK__StudentSu__Stude__37A5467C"),
                     j =>
                     {
-                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A38B23DA8C");
-                        j.ToTable("StudentSubject");
+                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A35E0362F5");
                     });
-        });
-
-        modelBuilder.Entity<Option>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC078A5BF550");
         });
 
         modelBuilder.Entity<OptionAnswer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC0710D88DB3");
-
-            entity.ToTable("OptionAnswer");
+            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC07E985DBAD");
 
             entity.Property(e => e.Content)
                 .IsRequired()
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Option).WithMany(p => p.OptionAnswers)
+            entity.HasOne(d => d.Option).WithMany(p => p.OptionAnswer)
                 .HasForeignKey(d => d.OptionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__OptionAns__Optio__2C3393D0");
         });
 
+        modelBuilder.Entity<Options>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC07FF4F010E");
+        });
+
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC072C66AF30");
+            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC07F723B42A");
 
-            entity.ToTable("Subject");
-
+            entity.Property(e => e.Description)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Teacher).WithMany(p => p.SubjectsNavigation)
+            entity.HasOne(d => d.Teacher).WithMany(p => p.SubjectNavigation)
                 .HasForeignKey(d => d.TeacherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Subject__Teacher__276EDEB3");
@@ -118,9 +114,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Task>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Task__3214EC07777DA9AC");
-
-            entity.ToTable("Task");
+            entity.HasKey(e => e.Id).HasName("PK__Task__3214EC072D85BF45");
 
             entity.Property(e => e.Answer)
                 .IsRequired()
@@ -129,85 +123,83 @@ public partial class GeoQuestContext : DbContext
                 .IsRequired()
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Options).WithMany(p => p.Tasks)
+            entity.HasOne(d => d.Options).WithMany(p => p.Task)
                 .HasForeignKey(d => d.OptionsId)
-                .HasConstraintName("FK__Task__OptionsId__398D8EEE");
+                .HasConstraintName("FK__Task__OptionsId__3A81B327");
         });
 
         modelBuilder.Entity<TaskInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TaskInst__3214EC077D894FFE");
-
-            entity.ToTable("TaskInstance");
+            entity.HasKey(e => e.Id).HasName("PK__TaskInst__3214EC07D2E07B62");
 
             entity.Property(e => e.StudentAnswer)
                 .IsRequired()
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskInstances)
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskInstance)
                 .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TaskInsta__TaskI__3C69FB99");
+                .HasConstraintName("FK__TaskInsta__TaskI__3D5E1FD2");
 
-            entity.HasOne(d => d.TestInstance).WithMany(p => p.TaskInstances)
+            entity.HasOne(d => d.TestInstance).WithMany(p => p.TaskInstance)
                 .HasForeignKey(d => d.TestInstanceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TaskInsta__TestI__3D5E1FD2");
+                .HasConstraintName("FK__TaskInsta__TestI__3E52440B");
         });
 
         modelBuilder.Entity<Test>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC0791B1CAD5");
-
-            entity.ToTable("Test");
+            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC0758B40B7A");
 
             entity.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(500)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Subject).WithMany(p => p.Tests)
+            entity.HasOne(d => d.Subject).WithMany(p => p.Test)
                 .HasForeignKey(d => d.SubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Test__SubjectId__2F10007B");
+                .HasConstraintName("FK__Test__SubjectId__300424B4");
 
-            entity.HasMany(d => d.Tasks).WithMany(p => p.Tests)
+            entity.HasOne(d => d.Teacher).WithMany(p => p.Test)
+                .HasForeignKey(d => d.TeacherId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Test__TeacherId__2F10007B");
+
+            entity.HasMany(d => d.Task).WithMany(p => p.Test)
                 .UsingEntity<Dictionary<string, object>>(
                     "TestTask",
                     r => r.HasOne<Task>().WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__TestTask__TaskId__412EB0B6"),
+                        .HasConstraintName("FK__TestTask__TaskId__4222D4EF"),
                     l => l.HasOne<Test>().WithMany()
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__TestTask__TestId__403A8C7D"),
+                        .HasConstraintName("FK__TestTask__TestId__412EB0B6"),
                     j =>
                     {
-                        j.HasKey("TestId", "TaskId").HasName("PK__TestTask__8B05A5FB89D26C56");
-                        j.ToTable("TestTask");
+                        j.HasKey("TestId", "TaskId").HasName("PK__TestTask__8B05A5FBD9274B41");
                     });
         });
 
         modelBuilder.Entity<TestInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC07A98A69FF");
-
-            entity.ToTable("TestInstance");
+            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC078397E0DB");
 
             entity.Property(e => e.InviteCode)
                 .IsRequired()
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Student).WithMany(p => p.TestInstances)
+            entity.HasOne(d => d.Student).WithMany(p => p.TestInstance)
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TestInsta__Stude__32E0915F");
+                .HasConstraintName("FK__TestInsta__Stude__33D4B598");
 
-            entity.HasOne(d => d.Test).WithMany(p => p.TestInstances)
+            entity.HasOne(d => d.Test).WithMany(p => p.TestInstance)
                 .HasForeignKey(d => d.TestId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TestInsta__TestI__31EC6D26");
+                .HasConstraintName("FK__TestInsta__TestI__32E0915F");
         });
 
         OnModelCreatingPartial(modelBuilder);

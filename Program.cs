@@ -70,12 +70,13 @@ builder.Services.AddDbContext<GeoQuestContext>(options =>
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ISubjectService, SubjectService>();
+builder.Services.AddTransient<ITestService, TestService>();
 
 // Repositories
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
-
+builder.Services.AddTransient<ITestRepository, TestRepository>();
 
 
 

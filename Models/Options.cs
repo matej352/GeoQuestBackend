@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace GeoQuest.Models;
 
-public partial class Option
+public partial class Options
 {
     public int Id { get; set; }
 
     public bool SingleSelect { get; set; }
 
-    public virtual ICollection<OptionAnswer> OptionAnswers { get; set; } = new List<OptionAnswer>();
+    public virtual ICollection<OptionAnswer> OptionAnswer { get; set; } = new List<OptionAnswer>();
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public virtual ICollection<Task> Task { get; set; } = new List<Task>();
 }

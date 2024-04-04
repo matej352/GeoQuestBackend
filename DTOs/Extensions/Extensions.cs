@@ -1,5 +1,6 @@
 ﻿using GeoQuest.Enums;
 using GeoQuest.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeoQuest.DTOs.Extensions
 {
@@ -25,6 +26,19 @@ namespace GeoQuest.DTOs.Extensions
             {
                 Id = s.Id,
                 Name = s.Name,
+            };
+        }
+
+        public static TestDto AsTestDto(this Test t)
+        {
+            return new TestDto
+            {
+
+                Id = t.Id,
+                TeacherId = t.TeacherId,
+                Description = t.Description,
+                Duration = t.Duration,
+                SubjectId = t.SubjectId,
             };
         }
 

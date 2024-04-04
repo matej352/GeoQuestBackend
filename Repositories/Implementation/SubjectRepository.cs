@@ -15,7 +15,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<Subject> GetSubject(int id)
         {
-            var _subject = await _context.Subjects.FirstOrDefaultAsync(e => e.Id == id);
+            var _subject = await _context.Subject.FirstOrDefaultAsync(e => e.Id == id);
 
             if (_subject is null)
             {
@@ -29,7 +29,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<IEnumerable<Subject>> GetSubjects(int teacherId)
         {
-            var subjects = await _context.Subjects.Where(subject => subject.TeacherId == teacherId).ToListAsync();
+            var subjects = await _context.Subject.Where(subject => subject.TeacherId == teacherId).ToListAsync();
             return subjects;
         }
 

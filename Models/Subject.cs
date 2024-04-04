@@ -11,11 +11,13 @@ public partial class Subject
 
     public string Name { get; set; }
 
+    public string Description { get; set; }
+
     public int TeacherId { get; set; }
 
     public virtual Account Teacher { get; set; }
 
-    public virtual ICollection<Test> Tests { get; set; } = new List<Test>();
+    public virtual ICollection<Test> Test { get; set; } = new List<Test>();
 
-    public virtual ICollection<Account> Students { get; set; } = new List<Account>();
+    public virtual ICollection<Account> Student { get; set; } = new List<Account>();
 }

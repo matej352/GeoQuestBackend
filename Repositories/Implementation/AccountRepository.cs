@@ -30,7 +30,7 @@ namespace GeoQuest.Repositories.Implementation
             hash = Convert.ToBase64String(passwordHash);
             salt = Convert.ToBase64String(passwordSalt);
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == accountId);
+            var account = await _context.Account.FirstOrDefaultAsync(acc => acc.Id == accountId);
 
             account!.Password = hash;
             account!.Salt = salt;
@@ -60,7 +60,7 @@ namespace GeoQuest.Repositories.Implementation
                 Email = registerDto.Email,
                 Password = password,
                 Salt = salt,
-                Role = (int)UserRole.Teacher
+                Role = (int)registerDto.Role
             };
 
             _context.Add(newAccount);
@@ -71,7 +71,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<int?> FindByEmail(string email)
         {
-            var account = await _context.Accounts.Where(acc => acc.Email == email).SingleOrDefaultAsync();
+            var account = await _context.Account.Where(acc => acc.Email == email).SingleOrDefaultAsync();
 
             if (account == null)
             {
@@ -85,12 +85,12 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<Account?> GetAccount(int id)
         {
-            return await _context.Accounts.FindAsync(id);
+            return await _context.Account.FindAsync(id);
         }
 
         public async Task<Account?> GetAccountByEmail(string email)
         {
-            return await _context.Accounts.FirstOrDefaultAsync(acc => acc.Email == email);
+            return await _context.Account.FirstOrDefaultAsync(acc => acc.Email == email);
         }
     }
 }

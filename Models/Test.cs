@@ -15,9 +15,13 @@ public partial class Test
 
     public int SubjectId { get; set; }
 
+    public int TeacherId { get; set; }
+
     public virtual Subject Subject { get; set; }
 
-    public virtual ICollection<TestInstance> TestInstances { get; set; } = new List<TestInstance>();
+    public virtual Account Teacher { get; set; }
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public virtual ICollection<TestInstance> TestInstance { get; set; } = new List<TestInstance>();
+
+    public virtual ICollection<Task> Task { get; set; } = new List<Task>();
 }

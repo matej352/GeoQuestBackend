@@ -17,9 +17,9 @@ public partial class Task
 
     public int? OptionsId { get; set; }
 
-    public virtual Option Options { get; set; }
+    public virtual Options Options { get; set; }
 
-    public virtual ICollection<TaskInstance> TaskInstances { get; set; } = new List<TaskInstance>();
+    public virtual ICollection<TaskInstance> TaskInstance { get; set; } = new List<TaskInstance>();
 
-    public virtual ICollection<Test> Tests { get; set; } = new List<Test>();
+    public virtual ICollection<Test> Test { get; set; } = new List<Test>();
 }

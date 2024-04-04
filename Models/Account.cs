@@ -21,9 +21,11 @@ public partial class Account
 
     public int Role { get; set; }
 
-    public virtual ICollection<Subject> SubjectsNavigation { get; set; } = new List<Subject>();
+    public virtual ICollection<Subject> SubjectNavigation { get; set; } = new List<Subject>();
 
-    public virtual ICollection<TestInstance> TestInstances { get; set; } = new List<TestInstance>();
+    public virtual ICollection<Test> Test { get; set; } = new List<Test>();
 
-    public virtual ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+    public virtual ICollection<TestInstance> TestInstance { get; set; } = new List<TestInstance>();
+
+    public virtual ICollection<Subject> Subject { get; set; } = new List<Subject>();
 }

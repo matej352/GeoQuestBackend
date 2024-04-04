@@ -15,5 +15,5 @@ public partial class OptionAnswer
 
     public int OptionId { get; set; }
 
-    public virtual Option Option { get; set; }
+    public virtual Options Option { get; set; }
 }

@@ -21,7 +21,7 @@ public partial class TestInstance
 
     public virtual Account Student { get; set; }
 
-    public virtual ICollection<TaskInstance> TaskInstances { get; set; } = new List<TaskInstance>();
+    public virtual ICollection<TaskInstance> TaskInstance { get; set; } = new List<TaskInstance>();
 
     public virtual Test Test { get; set; }
 }
