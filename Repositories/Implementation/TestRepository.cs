@@ -31,12 +31,12 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<IEnumerable<Test>> GetTests(int teacherId)
         {
-            var tests = await _context.Test.Where(t => t.TeacherId == teacherId).ToListAsync();
+            var tests = await _context.Test.Include(t => t.Subject).Where(t => t.TeacherId == teacherId).ToListAsync();
             return tests;
         }
 
 
-        public async Task<int> SaveTest(TestDto test, int teacherId)
+        public async Task<int> SaveTest(CreateTestDto test, int teacherId)
         {
             Test newTest = new Test
             {

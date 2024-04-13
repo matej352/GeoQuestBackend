@@ -1,6 +1,7 @@
 ﻿using GeoQuest.DTOs;
 using GeoQuest.Middlewares.UserContext;
 using GeoQuest.Services;
+using GeoQuest.Services.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,47 @@ namespace GeoQuest.Controllers
 
 
 
-        // GET: api/<TestController>
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [Route("Create")]
+        public async Task<ActionResult<TestDto>> CreateTest(CreateTestDto testDto)
+        {
+
+            var newTest = await _testService.CreateTest(testDto);
+
+            return Ok(newTest);
+
+        }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        [Route("Tests")]
+        public async Task<ActionResult<IEnumerable<TestDto>>> Tests()
+        {
+
+            var tests = await _testService.GetTests(_userContext.Id);
+
+            return Ok(tests);
+
+        }
+
+        /*// PUT api/<TestController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<TestController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+        
+         
+                 // GET: api/<TestController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -39,29 +80,7 @@ namespace GeoQuest.Controllers
         {
             return "value";
         }
-
-        [Authorize(Roles = "Teacher")]
-        [HttpPost]
-        [Route("Create")]
-        public async Task<ActionResult<TestDto>> CreateSubject(TestDto testDto)
-        {
-
-            var newTest = await _testService.CreateTest(testDto);
-
-            return Ok(newTest);
-
-        }
-
-        // PUT api/<TestController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<TestController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+         
+         */
     }
 }

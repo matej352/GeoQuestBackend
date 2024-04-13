@@ -7,7 +7,7 @@ namespace GeoQuest.Repositories
     {
         public Task<IEnumerable<Test>> GetTests(int teacherId);
 
-        public Task<int> SaveTest(TestDto test, int teacherId);
+        public Task<int> SaveTest(CreateTestDto test, int teacherId);
 
         public Task<Test> GetTest(int id);
 
