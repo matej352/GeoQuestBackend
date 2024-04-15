@@ -17,7 +17,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<Test> GetTest(int id)
         {
-            var _test = await _context.Test.FirstOrDefaultAsync(t => t.Id == id);
+            var _test = await _context.Test.Include(t => t.Subject).FirstOrDefaultAsync(t => t.Id == id);
 
             if (_test is null)
             {
@@ -40,6 +40,7 @@ namespace GeoQuest.Repositories.Implementation
         {
             Test newTest = new Test
             {
+                Name = test.Name,
                 Duration = test.Duration,
                 Description = test.Description,
                 SubjectId = test.SubjectId,

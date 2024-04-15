@@ -92,5 +92,10 @@ namespace GeoQuest.Repositories.Implementation
         {
             return await _context.Account.FirstOrDefaultAsync(acc => acc.Email == email);
         }
+
+        public async Task<IEnumerable<Account>> GetAccounts(UserRole role, int subjectId)
+        {
+            return await _context.Account.Where(acc => acc.Role == (int)role && !acc.Subject.Any(subject => subject.Id == subjectId)).ToListAsync();
+        }
     }
 }

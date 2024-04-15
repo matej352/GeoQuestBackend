@@ -1,4 +1,5 @@
 ﻿using GeoQuest.DTOs;
+using GeoQuest.Enums;
 using GeoQuest.Models;
 using Task = System.Threading.Tasks.Task;
 
@@ -16,6 +17,8 @@ namespace GeoQuest.Repositories
 
 
         public Task<Account?> GetAccount(int id);
+
+        public Task<IEnumerable<Account>> GetAccounts(UserRole role, int subjectId);
 
         public Task ChangePassword(int accountId, string password);
     }

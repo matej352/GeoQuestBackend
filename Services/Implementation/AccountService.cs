@@ -1,8 +1,10 @@
 ﻿using GeoQuest.DTOs;
 using GeoQuest.DTOs.Extensions;
+using GeoQuest.Enums;
 using GeoQuest.Middlewares.UserContext;
 using GeoQuest.Models;
 using GeoQuest.Repositories;
+using GeoQuest.Repositories.Implementation;
 
 namespace GeoQuest.Services.Implementation
 {
@@ -70,6 +72,10 @@ namespace GeoQuest.Services.Implementation
             return account.AsAccountDto();
         }
 
+        public async Task<IEnumerable<Account>> GetAccounts(UserRole role, int subjectId)
+        {
+            return await _accountRepository.GetAccounts(role, subjectId);
 
+        }
     }
 }

@@ -36,6 +36,19 @@ namespace GeoQuest.Controllers
 
         }
 
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        [Route("Subject")]
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> Subject(int subjectId)
+        {
+
+            var subject = await _subjectService.GetSubjectDetails(subjectId);
+
+            return Ok(subject);
+
+        }
+
+
 
         [Authorize(Roles = "Teacher")]
         [HttpPost]
@@ -46,6 +59,19 @@ namespace GeoQuest.Controllers
             var newSubject = await _subjectService.CreateSubject(subjectDto);
 
             return Ok(newSubject);
+
+        }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [Route("Students")]
+        public async Task<ActionResult> AddStudents(int subjectId, List<int> studentIds)
+        {
+
+            await _subjectService.AddStudents(subjectId, studentIds);
+
+            return Ok();
 
         }
 

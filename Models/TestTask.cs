@@ -5,9 +5,13 @@ using System.Collections.Generic;
 
 namespace GeoQuest.Models;
 
-public partial class Task
+public partial class TestTask
 {
     public int Id { get; set; }
+
+    public string MapType { get; set; }
+
+    public string MapCenter { get; set; }
 
     public string Question { get; set; }
 
@@ -17,9 +21,11 @@ public partial class Task
 
     public int? OptionsId { get; set; }
 
+    public int? TestId { get; set; }
+
     public virtual Options Options { get; set; }
 
-    public virtual ICollection<TaskInstance> TaskInstance { get; set; } = new List<TaskInstance>();
+    public virtual Test Test { get; set; }
 
-    public virtual ICollection<Test> Test { get; set; } = new List<Test>();
+    public virtual ICollection<TestTaskInstance> TestTaskInstance { get; set; } = new List<TestTaskInstance>();
 }

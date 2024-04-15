@@ -8,8 +8,8 @@ namespace GeoQuest.Repositories
 
         public Task<int> SaveTask(TaskDto task, int testId);
 
-        public Task<Models.Task> GetTask(int id);
+        public Task<TestTask> GetTask(int id);
 
-        public Task<IEnumerable<Models.Task>> GetTasks(int testId);
+        public Task<IEnumerable<TestTask>> GetTasks(int testId);
     }
 }

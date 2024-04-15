@@ -20,6 +20,11 @@ namespace GeoQuest.Services.Implementation
             _subjectRepository = subjectRepository;
         }
 
+        public async Task AddStudents(int subjectId, List<int> studentIds)
+        {
+            await _subjectRepository.AddStudents(subjectId, studentIds);
+        }
+
         public async Task<SubjectDto> CreateSubject(SubjectDto subject)
         {
             var subjectId = await _subjectRepository.SaveSubject(subject, _userContext.Id);
@@ -27,6 +32,13 @@ namespace GeoQuest.Services.Implementation
             var _subject = await _subjectRepository.GetSubject(subjectId);
 
             return _subject.AsSubjectDto();
+        }
+
+        public async Task<SubjectDetailsDto> GetSubjectDetails(int subjectId)
+        {
+            var subject = await _subjectRepository.GetSubjectDetails(subjectId);
+
+            return subject;
         }
 
         public async Task<IEnumerable<SubjectDto>> GetSubjects(int teacherId)

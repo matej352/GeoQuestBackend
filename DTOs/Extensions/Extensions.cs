@@ -26,6 +26,7 @@ namespace GeoQuest.DTOs.Extensions
             {
                 Id = s.Id,
                 Name = s.Name,
+                Description = s.Description,
             };
         }
 
@@ -35,7 +36,7 @@ namespace GeoQuest.DTOs.Extensions
             {
 
                 Id = t.Id,
-                TeacherId = t.TeacherId,
+                Name = t.Name,
                 Description = t.Description,
                 Duration = t.Duration,
                 SubjectId = t.SubjectId,
@@ -56,7 +57,7 @@ namespace GeoQuest.DTOs.Extensions
         }
 
 
-        public static TaskDto AsTaskDto(this Models.Task task)
+        public static TaskDto AsTaskDto(this TestTask task)
         {
             return new TaskDto
             {
@@ -75,6 +76,18 @@ namespace GeoQuest.DTOs.Extensions
                         Correct = oa.Correct
                     }).ToList() ?? new List<OptionAnswerDto>() // Use null-conditional operator and null-coalescing operator
                 } : null,
+            };
+        }
+
+
+        public static StudentDto AsStudentDto(this Account a)
+        {
+            return new StudentDto
+            {
+                Id = a.Id,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                Email = a.Email
             };
         }
 

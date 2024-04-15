@@ -36,14 +36,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Task]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TaskInstance]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Test]",
          "ObjectType": 0
       },
@@ -52,7 +44,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[TestInstanceBase]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[TestTask]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TestTaskInstance]",
          "ObjectType": 0
       }
    ],

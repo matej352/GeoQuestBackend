@@ -9,6 +9,8 @@ public partial class Test
 {
     public int Id { get; set; }
 
+    public string Name { get; set; }
+
     public int Duration { get; set; }
 
     public string Description { get; set; }
@@ -21,7 +23,7 @@ public partial class Test
 
     public virtual Account Teacher { get; set; }
 
-    public virtual ICollection<TestInstance> TestInstance { get; set; } = new List<TestInstance>();
+    public virtual ICollection<TestInstanceBase> TestInstanceBase { get; set; } = new List<TestInstanceBase>();
 
-    public virtual ICollection<Task> Task { get; set; } = new List<Task>();
+    public virtual ICollection<TestTask> TestTask { get; set; } = new List<TestTask>();
 }

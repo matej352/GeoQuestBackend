@@ -7,6 +7,10 @@ namespace GeoQuest.Services
     {
         public Task<IEnumerable<SubjectDto>> GetSubjects(int teacherId);
 
+        public Task<SubjectDetailsDto> GetSubjectDetails(int subjectId);
+
         public Task<SubjectDto> CreateSubject(SubjectDto subject);
+
+        public Task AddStudents(int subjectId, List<int> studentIds);
     }
 }

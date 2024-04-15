@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GeoQuest.Models;
 
-public partial class TaskInstance
+public partial class TestTaskInstance
 {
     public int Id { get; set; }
 
@@ -15,11 +15,11 @@ public partial class TaskInstance
 
     public bool Checked { get; set; }
 
-    public int TaskId { get; set; }
+    public int TestTaskId { get; set; }
 
     public int TestInstanceId { get; set; }
 
-    public virtual Task Task { get; set; }
-
     public virtual TestInstance TestInstance { get; set; }
+
+    public virtual TestTask TestTask { get; set; }
 }

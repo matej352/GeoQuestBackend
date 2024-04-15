@@ -22,7 +22,7 @@ namespace GeoQuest.Services.Implementation
 
         public async Task<TaskDto> CreateTask(TaskDto task)
         {
-            var taskId = await _taskRepository.SaveTask(task, _userContext.Id);
+            var taskId = await _taskRepository.SaveTask(task, task.TestId);
 
             var _task = await _taskRepository.GetTask(taskId);
 
@@ -31,6 +31,9 @@ namespace GeoQuest.Services.Implementation
 
         public async Task<IEnumerable<TaskDto>> GetTasks(int testId)
         {
+
+            // provjera dal je test od tog teachera
+
             var tasks = await _taskRepository.GetTasks(testId);
 
             List<TaskDto> taskDtoList = tasks.Select(t => t.AsTaskDto()).ToList();

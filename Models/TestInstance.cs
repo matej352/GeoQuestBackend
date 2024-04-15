@@ -15,13 +15,13 @@ public partial class TestInstance
 
     public int ElapsedTime { get; set; }
 
-    public int TestId { get; set; }
+    public int TestInstanceBaseId { get; set; }
 
     public int StudentId { get; set; }
 
     public virtual Account Student { get; set; }
 
-    public virtual ICollection<TaskInstance> TaskInstance { get; set; } = new List<TaskInstance>();
+    public virtual TestInstanceBase TestInstanceBase { get; set; }
 
-    public virtual Test Test { get; set; }
+    public virtual ICollection<TestTaskInstance> TestTaskInstance { get; set; } = new List<TestTaskInstance>();
 }

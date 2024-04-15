@@ -1,6 +1,8 @@
 ﻿using Azure;
 using GeoQuest.DTOs;
+using GeoQuest.DTOs.Extensions;
 using GeoQuest.Middlewares.UserContext;
+using GeoQuest.Models;
 using GeoQuest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -50,6 +52,20 @@ namespace GeoQuest.Controllers
         {
             var details = await _accountService.GetAccount(_userContext.Id);
             return Ok(details);
+        }
+
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        [Route("Students")]
+        public async Task<ActionResult<StudentDto>> GetStudentAccounts(int subjectId)
+        {
+            var accounts = await _accountService.GetAccounts(Enums.UserRole.Student, subjectId);
+
+            List<StudentDto> studentDtoList = accounts.Select(a => a.AsStudentDto()).ToList();
+
+            return Ok(studentDtoList);
         }
 
 

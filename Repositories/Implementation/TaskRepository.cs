@@ -14,9 +14,9 @@ namespace GeoQuest.Repositories.Implementation
             _context = context;
         }
 
-        public async Task<Models.Task> GetTask(int id)
+        public async Task<TestTask> GetTask(int id)
         {
-            var _task = await _context.Task.FirstOrDefaultAsync(t => t.Id == id);
+            var _task = await _context.TestTask.FirstOrDefaultAsync(t => t.Id == id);
 
             if (_task is null)
             {
@@ -28,7 +28,7 @@ namespace GeoQuest.Repositories.Implementation
             }
         }
 
-        public async Task<IEnumerable<Models.Task>> GetTasks(int testId)
+        public async Task<IEnumerable<TestTask>> GetTasks(int testId)
         {
             var test = await _context.Test.FirstOrDefaultAsync(t => t.Id == testId);
             if (test is null)
@@ -36,7 +36,7 @@ namespace GeoQuest.Repositories.Implementation
                 throw new Exception($"Test with id = {testId} does not exists");
             }
 
-            var _tasks = await _context.Task.Include(t => t.Options).Include(t => t.Options.OptionAnswer).Where(t => t.Test.Contains(test)).ToListAsync();
+            var _tasks = await _context.TestTask.Include(t => t.Options).Include(t => t.Options.OptionAnswer).Where(t => t.TestId == testId).ToListAsync();
 
             return _tasks;
 
@@ -45,7 +45,7 @@ namespace GeoQuest.Repositories.Implementation
         public async Task<int> SaveTask(TaskDto taskDto, int testId)
         {
 
-            var test = await _context.Test.FirstOrDefaultAsync(t => t.Id == 1);
+            var test = await _context.Test.FirstOrDefaultAsync(t => t.Id == testId);
 
             if (test is null)
             {
@@ -53,12 +53,12 @@ namespace GeoQuest.Repositories.Implementation
             }
 
             // Convert TaskDto to Task entity
-            var taskEntity = new Models.Task
+            var taskEntity = new TestTask
             {
                 Question = taskDto.Question,
                 Answer = taskDto.Answer,
                 Type = (int)taskDto.Type,
-                Test = new List<Test>() { test },
+                TestId = test.Id,
                 // Do not set OptionsId here; it will be set upon saving Options
             };
 
@@ -84,7 +84,7 @@ namespace GeoQuest.Repositories.Implementation
             }
 
             // Now save the Task
-            await _context.Task.AddAsync(taskEntity);
+            await _context.TestTask.AddAsync(taskEntity);
             await _context.SaveChangesAsync();
 
             // Assuming you have a mechanism to associate this task with a test

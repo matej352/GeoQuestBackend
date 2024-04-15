@@ -13,5 +13,5 @@ public partial class Options
 
     public virtual ICollection<OptionAnswer> OptionAnswer { get; set; } = new List<OptionAnswer>();
 
-    public virtual ICollection<Task> Task { get; set; } = new List<Task>();
+    public virtual ICollection<TestTask> TestTask { get; set; } = new List<TestTask>();
 }

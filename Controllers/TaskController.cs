@@ -27,12 +27,12 @@ namespace GeoQuest.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<SubjectDto>> CreateTask(TaskDto taskDto)
+        public async Task<ActionResult<TaskDto>> CreateTask(TaskDto taskDto)
         {
 
-            var newSubject = await _taskService.CreateTask(taskDto);
+            var newTask = await _taskService.CreateTask(taskDto);
 
-            return Ok(newSubject);
+            return Ok(newTask);
 
         }
 
@@ -42,7 +42,7 @@ namespace GeoQuest.Controllers
         public async Task<ActionResult<IEnumerable<TaskDto>>> Tasks(int testId)
         {
 
-            var tasks = await _taskService.GetTasks(_userContext.Id);
+            var tasks = await _taskService.GetTasks(testId);
 
             return Ok(tasks);
 

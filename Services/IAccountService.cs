@@ -1,4 +1,5 @@
 ﻿using GeoQuest.DTOs;
+using GeoQuest.Enums;
 using GeoQuest.Models;
 
 namespace GeoQuest.Services
@@ -10,5 +11,7 @@ namespace GeoQuest.Services
         public Task<Account?> GetAccountByEmail(string email);
 
         public Task<AccountDto> GetAccount(int id);
+
+        public Task<IEnumerable<Account>> GetAccounts(UserRole role, int subjectId);
     }
 }
