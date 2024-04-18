@@ -37,9 +37,9 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC0704E6EE3C");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC072893943C");
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D105340076216C").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D105340674D7D7").IsUnique();
 
             entity.Property(e => e.Email)
                 .IsRequired()
@@ -73,13 +73,13 @@ public partial class GeoQuestContext : DbContext
                         .HasConstraintName("FK__StudentSu__Stude__3A81B327"),
                     j =>
                     {
-                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A33CA806F8");
+                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A39A367CC7");
                     });
         });
 
         modelBuilder.Entity<OptionAnswer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC07569CAB0E");
+            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC078919B09E");
 
             entity.Property(e => e.Content)
                 .IsRequired()
@@ -93,12 +93,12 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Options>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC07EC79C8BF");
+            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC0784440FCA");
         });
 
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC07C4F9E878");
+            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC07139AB576");
 
             entity.Property(e => e.Description)
                 .HasMaxLength(1000)
@@ -116,7 +116,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Test>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC072E7832F8");
+            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC07D7044F95");
 
             entity.Property(e => e.Description)
                 .IsRequired()
@@ -140,11 +140,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC0783F219F0");
-
-            entity.Property(e => e.InviteCode)
-                .IsRequired()
-                .IsUnicode(false);
+            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC07F533FE87");
 
             entity.HasOne(d => d.Student).WithMany(p => p.TestInstance)
                 .HasForeignKey(d => d.StudentId)
@@ -159,7 +155,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestInstanceBase>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC07A187B3FD");
+            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC07F0B2605A");
 
             entity.HasOne(d => d.Test).WithMany(p => p.TestInstanceBase)
                 .HasForeignKey(d => d.TestId)
@@ -169,7 +165,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestTask>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC079ABC5D93");
+            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07FDB732C3");
 
             entity.Property(e => e.Answer)
                 .IsRequired()
@@ -190,26 +186,25 @@ public partial class GeoQuestContext : DbContext
 
             entity.HasOne(d => d.Test).WithMany(p => p.TestTask)
                 .HasForeignKey(d => d.TestId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__TestTask__TestId__3E52440B");
         });
 
         modelBuilder.Entity<TestTaskInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07014C1CEA");
+            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07CD6F68D3");
 
-            entity.Property(e => e.StudentAnswer)
-                .IsRequired()
-                .IsUnicode(false);
+            entity.Property(e => e.StudentAnswer).IsUnicode(false);
 
             entity.HasOne(d => d.TestInstance).WithMany(p => p.TestTaskInstance)
                 .HasForeignKey(d => d.TestInstanceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TestTaskI__TestI__44FF419A");
+                .HasConstraintName("FK__TestTaskI__TestI__4222D4EF");
 
             entity.HasOne(d => d.TestTask).WithMany(p => p.TestTaskInstance)
                 .HasForeignKey(d => d.TestTaskId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TestTaskI__TestT__440B1D61");
+                .HasConstraintName("FK__TestTaskI__TestT__412EB0B6");
         });
 
         OnModelCreatingPartial(modelBuilder);

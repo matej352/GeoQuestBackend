@@ -34,7 +34,6 @@ namespace GeoQuest.DTOs.Extensions
         {
             return new CreateTestDto
             {
-
                 Id = t.Id,
                 Name = t.Name,
                 Description = t.Description,
@@ -50,11 +49,28 @@ namespace GeoQuest.DTOs.Extensions
 
                 Id = t.Id,
                 TeacherId = t.TeacherId,
+                Name = t.Name,
                 Description = t.Description,
                 Duration = t.Duration,
                 Subject = t.Subject.Name,
             };
         }
+
+        public static TestInstanceDto AsTestInstanceDto(this TestInstance t)
+        {
+            return new TestInstanceDto
+            {
+
+                Id = t.Id,
+                TeacherName = t.TestInstanceBase.Test.Teacher.FirstName + " " + t.TestInstanceBase.Test.Teacher.LastName,
+                Name = t.TestInstanceBase.Test.Name,
+                Description = t.TestInstanceBase.Test.Description,
+                Duration = t.TestInstanceBase.Test.Duration,
+                Subject = t.TestInstanceBase.Test.Subject.Name,
+            };
+        }
+
+
 
 
         public static TaskDto AsTaskDto(this TestTask task)
@@ -62,6 +78,7 @@ namespace GeoQuest.DTOs.Extensions
             return new TaskDto
             {
                 Id = task.Id,
+                TestId = (int)task.TestId, //kod kreiranja baze sam trebo stavit da je taj key NOT NULL
                 Question = task.Question,
                 Answer = task.Answer,
                 Type = (TaskType)task.Type, // Ensure that the task.Type conversion to TaskType enum is safe

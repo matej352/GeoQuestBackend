@@ -16,7 +16,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<TestTask> GetTask(int id)
         {
-            var _task = await _context.TestTask.FirstOrDefaultAsync(t => t.Id == id);
+            var _task = await _context.TestTask.Include(t => t.Test).Include(t => t.Options).Include(t => t.Options.OptionAnswer).FirstOrDefaultAsync(t => t.Id == id);
 
             if (_task is null)
             {
@@ -36,7 +36,7 @@ namespace GeoQuest.Repositories.Implementation
                 throw new Exception($"Test with id = {testId} does not exists");
             }
 
-            var _tasks = await _context.TestTask.Include(t => t.Options).Include(t => t.Options.OptionAnswer).Where(t => t.TestId == testId).ToListAsync();
+            var _tasks = await _context.TestTask.Include(t => t.Test).Include(t => t.Options).Include(t => t.Options.OptionAnswer).Where(t => t.TestId == testId).ToListAsync();
 
             return _tasks;
 

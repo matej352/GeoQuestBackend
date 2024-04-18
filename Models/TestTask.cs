@@ -21,7 +21,7 @@ public partial class TestTask
 
     public int? OptionsId { get; set; }
 
-    public int? TestId { get; set; }
+    public int TestId { get; set; }
 
     public virtual Options Options { get; set; }
 

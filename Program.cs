@@ -72,6 +72,8 @@ builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ISubjectService, SubjectService>();
 builder.Services.AddTransient<ITestService, TestService>();
 builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddTransient<ITestInstanceService, TestInstanceService>();
+builder.Services.AddTransient<ITestTaskInstanceService, TestTaskInstanceService>();
 
 // Repositories
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
@@ -79,7 +81,8 @@ builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<ISubjectRepository, SubjectRepository>();
 builder.Services.AddTransient<ITestRepository, TestRepository>();
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
-
+builder.Services.AddTransient<ITestInstanceRepository, TestInstanceRepository>();
+builder.Services.AddTransient<ITestTaskInstanceRepository, TestTaskInstanceRepository>();
 
 
 var app = builder.Build();

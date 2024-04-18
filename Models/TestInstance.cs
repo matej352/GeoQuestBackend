@@ -9,9 +9,9 @@ public partial class TestInstance
 {
     public int Id { get; set; }
 
-    public string InviteCode { get; set; }
+    public bool Started { get; set; }
 
-    public bool Opened { get; set; }
+    public bool Finished { get; set; }
 
     public int ElapsedTime { get; set; }
 

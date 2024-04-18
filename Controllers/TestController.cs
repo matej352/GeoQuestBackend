@@ -32,7 +32,7 @@ namespace GeoQuest.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<TestDto>> CreateTest(CreateTestDto testDto)
+        public async Task<ActionResult> CreateTest(CreateTestDto testDto)
         {
 
             var newTest = await _testService.CreateTest(testDto);
@@ -40,6 +40,20 @@ namespace GeoQuest.Controllers
             return Ok(newTest);
 
         }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [Route("Publish")]
+        public async Task<ActionResult<TestDto>> PublishTest([FromBody] int testId)
+        {
+
+            await _testService.PublishTest(testId);
+
+            return Ok();
+
+        }
+
 
 
         [Authorize(Roles = "Teacher")]
@@ -51,6 +65,18 @@ namespace GeoQuest.Controllers
             var tests = await _testService.GetTests(_userContext.Id);
 
             return Ok(tests);
+
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        [Route("Test")]
+        public async Task<ActionResult<TestDto>> Test(int testId)
+        {
+
+            var test = await _testService.GetTest(testId);
+
+            return Ok(test);
 
         }
 

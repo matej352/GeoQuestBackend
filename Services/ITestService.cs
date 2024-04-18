@@ -6,6 +6,10 @@ namespace GeoQuest.Services
     {
         public Task<TestDto> CreateTest(CreateTestDto test);
 
+        public Task PublishTest(int testId);
+
         public Task<IEnumerable<TestDto>> GetTests(int teacherId);
+
+        public Task<TestDto> GetTest(int testId);
     }
 }

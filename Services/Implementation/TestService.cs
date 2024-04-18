@@ -1,6 +1,7 @@
 ﻿using GeoQuest.DTOs;
 using GeoQuest.DTOs.Extensions;
 using GeoQuest.Middlewares.UserContext;
+using GeoQuest.Models;
 using GeoQuest.Repositories;
 using GeoQuest.Repositories.Implementation;
 
@@ -31,6 +32,15 @@ namespace GeoQuest.Services.Implementation
             return _test.AsTestDto();
         }
 
+        public async Task<TestDto> GetTest(int testId)
+        {
+            var test = await _testRepository.GetTest(testId);
+
+            var testDto = test.AsTestDto();
+
+            return testDto;
+        }
+
         public async Task<IEnumerable<TestDto>> GetTests(int teacherId)
         {
             var tests = await _testRepository.GetTests(teacherId);
@@ -38,6 +48,11 @@ namespace GeoQuest.Services.Implementation
             List<TestDto> testDtoList = tests.Select(t => t.AsTestDto()).ToList();
 
             return testDtoList;
+        }
+
+        public async Task PublishTest(int testId)
+        {
+            await _testRepository.PublishTest(testId);
         }
     }
 }

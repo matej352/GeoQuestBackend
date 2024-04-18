@@ -9,7 +9,7 @@ namespace GeoQuest.DTOs
         public string Question { get; set; }
         public string Answer { get; set; }
         public TaskType Type { get; set; } // Assuming TaskType is an enum for different task types
-        public OptionsDto Options { get; set; } // Optional
+        public OptionsDto? Options { get; set; } // Optional
         public int TestId { get; set; }
 
         // If you're using Entity Framework or similar ORM, you might need navigation properties here
