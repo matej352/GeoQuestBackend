@@ -8,7 +8,7 @@ namespace GeoQuest.DTOs
         public int Id { get; set; }
 
         [Required]
-        public int Duration { get; set; }
+        public TimeSpan Duration { get; set; }
 
         [Required]
         public string Name { get; set; }

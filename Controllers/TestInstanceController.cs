@@ -36,11 +36,23 @@ namespace GeoQuest.Controllers
 
         }
 
+        [Authorize(Roles = "Student")]
+        [HttpGet]
+        [Route("TestInstance")]
+        public async Task<ActionResult<TestInstanceDetailsDto>> TestInstance(int testInstanceId)
+        {
+
+            var tests = await _testInstanceService.GetTestInstance(testInstanceId);
+
+            return Ok(tests);
+
+        }
+
 
         [Authorize(Roles = "Student")]
         [HttpPost]
         [Route("Start")]
-        public async Task<ActionResult> StartTestInstance(int instanceId)
+        public async Task<ActionResult> StartTestInstance([FromBody] int instanceId)
         {
 
             await _testInstanceService.StartTestInstance(instanceId);
@@ -52,11 +64,24 @@ namespace GeoQuest.Controllers
 
         [Authorize(Roles = "Student")]
         [HttpPost]
-        [Route("Finish")]
-        public async Task<ActionResult> FinishTestInstance(int instanceId)
+        [Route("ElapsedTime")]
+        public async Task<ActionResult> UpdateElapsedTime(UpdateElapsedTimeDto updateElapsedTimeDto)
         {
 
-            await _testInstanceService.FinishTestInstance(instanceId);
+            await _testInstanceService.UpdateElapsedTime(updateElapsedTimeDto.Id, updateElapsedTimeDto.ElapsedTime);
+
+            return Ok();
+
+        }
+
+
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        [Route("Finish")]
+        public async Task<ActionResult> FinishTestInstance(FinishTestInstanceDto finishTestInstanceDto)
+        {
+
+            await _testInstanceService.FinishTestInstance(finishTestInstanceDto.Id, finishTestInstanceDto.ElapsedTime);
 
             return Ok();
 

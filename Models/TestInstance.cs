@@ -13,7 +13,7 @@ public partial class TestInstance
 
     public bool Finished { get; set; }
 
-    public int ElapsedTime { get; set; }
+    public TimeSpan? ElapsedTime { get; set; }
 
     public int TestInstanceBaseId { get; set; }
 

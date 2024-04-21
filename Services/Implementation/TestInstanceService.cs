@@ -34,9 +34,23 @@ namespace GeoQuest.Services.Implementation
         }
 
 
-        public async Task FinishTestInstance(int instanceId)
+        public async Task FinishTestInstance(int instanceId, TimeSpan elapsedTime)
         {
-            await _testInstanceRepository.FinishTestInstance(instanceId, _userContext.Id);
+            await _testInstanceRepository.FinishTestInstance(instanceId, elapsedTime, _userContext.Id);
+        }
+
+        public async Task<TestInstanceDetailsDto> GetTestInstance(int testInstanceId)
+        {
+            var instance = await _testInstanceRepository.GetTestInstance(testInstanceId);
+
+            var dto = instance.AsTestInstanceDetailsDto();
+
+            return dto;
+        }
+
+        public async Task UpdateElapsedTime(int instanceId, TimeSpan elapsedTime)
+        {
+            await _testInstanceRepository.UpdateElapsedTime(instanceId, elapsedTime, _userContext.Id);
         }
     }
 }

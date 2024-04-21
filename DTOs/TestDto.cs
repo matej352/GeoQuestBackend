@@ -6,7 +6,7 @@
 
         public int TeacherId { get; set; }
 
-        public int Duration { get; set; }
+        public TimeSpan Duration { get; set; }
 
         public string Name { get; set; }
 

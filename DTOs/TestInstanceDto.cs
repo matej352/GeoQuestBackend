@@ -7,7 +7,7 @@
 
         public string TeacherName { get; set; }
 
-        public int Duration { get; set; }
+        public TimeSpan Duration { get; set; }
 
         public string Name { get; set; }
 
@@ -16,5 +16,20 @@
         public string Subject { get; set; }
 
 
+    }
+
+
+    public class FinishTestInstanceDto
+    {
+        public int Id { get; set; }
+
+        public TimeSpan ElapsedTime { get; set; }
+    }
+
+    public class UpdateElapsedTimeDto
+    {
+        public int Id { get; set; }
+
+        public TimeSpan ElapsedTime { get; set; }
     }
 }

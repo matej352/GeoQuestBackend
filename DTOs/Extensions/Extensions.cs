@@ -46,7 +46,6 @@ namespace GeoQuest.DTOs.Extensions
         {
             return new TestDto
             {
-
                 Id = t.Id,
                 TeacherId = t.TeacherId,
                 Name = t.Name,
@@ -67,6 +66,18 @@ namespace GeoQuest.DTOs.Extensions
                 Description = t.TestInstanceBase.Test.Description,
                 Duration = t.TestInstanceBase.Test.Duration,
                 Subject = t.TestInstanceBase.Test.Subject.Name,
+            };
+        }
+
+        public static TestInstanceDetailsDto AsTestInstanceDetailsDto(this TestInstance t)
+        {
+            return new TestInstanceDetailsDto
+            {
+                Id = t.Id,
+                Duration = t.TestInstanceBase.Test.Duration,
+                Started = t.Started,
+                Finished = t.Finished,
+                ElapsedTime = t.ElapsedTime
             };
         }
 

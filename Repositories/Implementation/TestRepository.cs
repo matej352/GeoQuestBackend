@@ -74,7 +74,6 @@ namespace GeoQuest.Repositories.Implementation
 
                             Started = false, // Assuming the test instance is not opened initially
                             Finished = false,
-                            ElapsedTime = 0, // Initialize elapsed time to 0
                             TestInstanceBaseId = testInstanceBase.Id, // Assign the test instance base id
                             StudentId = student.Id // Assign the student id
                         };
