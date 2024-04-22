@@ -1,4 +1,5 @@
-﻿using GeoQuest.Models;
+﻿using GeoQuest.DTOs;
+using GeoQuest.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeoQuest.Repositories.Implementation
@@ -15,14 +16,27 @@ namespace GeoQuest.Repositories.Implementation
 
 
 
-        public async Task<IEnumerable<TestInstance>> GetTestInstances(int studentId)
+        public async Task<IEnumerable<TestInstance>> GetTestInstances(int studentId, bool finished)
         {
-            var testInstances = await _context.TestInstance
+
+            var testInstances = new List<TestInstance>();
+
+            if (finished)
+            {
+                testInstances = await _context.TestInstance
                 .Include(t => t.TestInstanceBase.Test)
                 .Include(t => t.TestInstanceBase.Test.Teacher)
                 .Include(t => t.TestInstanceBase.Test.Subject)
-                .Where(t => t.StudentId == studentId && t.Started == false && t.Finished == false && t.TestInstanceBase.Active == true).ToListAsync();       // dohvati samo one instance koje jos nisu pokrenute i koje nisu rijesene i koje se jos uvijek mogu pokrenuti (učitelj nije zatvorio ispit)
-
+                .Where(t => t.StudentId == studentId && t.Started == true && t.Finished == true).ToListAsync();
+            }
+            else
+            {
+                testInstances = await _context.TestInstance
+               .Include(t => t.TestInstanceBase.Test)
+               .Include(t => t.TestInstanceBase.Test.Teacher)
+               .Include(t => t.TestInstanceBase.Test.Subject)
+               .Where(t => t.StudentId == studentId && t.Started == false && t.Finished == false && t.TestInstanceBase.Active == true).ToListAsync();       // dohvati samo one instance koje jos nisu pokrenute i koje nisu rijesene i koje se jos uvijek mogu pokrenuti (učitelj nije zatvorio ispit)
+            }
 
             return testInstances;
         }
@@ -83,11 +97,73 @@ namespace GeoQuest.Repositories.Implementation
 
             if (instance == null)
             {
-                throw new Exception($"Problem while updating elapsed time for testi instance with id = {instanceId}");
+                throw new Exception($"Problem while updating elapsed time for test instance with id = {instanceId}");
             }
 
             instance.ElapsedTime = elapsedTime;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<TestInstanceResultDto> GetTestInstanceResult(int testInstanceId)
+        {
+
+
+            var testTaskInstances = await _context.TestTaskInstance
+                  .Where(tti => tti.TestInstanceId == testInstanceId)
+                  .Select(tti => new
+                  {
+                      tti.StudentAnswer,
+                      CorrectAnswer = tti.TestTask.Answer != "" ? tti.TestTask.Answer :
+                          _context.OptionAnswer
+                              .Where(oa => oa.OptionId == tti.TestTask.OptionsId && oa.Correct)
+                              .Select(oa => oa.Content)
+                              .FirstOrDefault()
+                  })
+                  .ToListAsync();
+
+
+
+            var testInstanceResultDto = await _context.TestInstance
+                                            .Where(ti => ti.Id == testInstanceId)
+                                            .Select(ti => new TestInstanceResultDto
+                                            {
+                                                TestInstanceId = ti.Id,
+                                                TotalPoints = ti.TestTaskInstance.Count(tt => tt.Correct),    // Each correct task is 1 point
+                                                PercentageResolved = (double)ti.TestTaskInstance.Count(tt => tt.Checked) / ti.TestTaskInstance.Count() * 100,
+                                                TestTasks = ti.TestTaskInstance.Select(tti => new TestTaskResultDto
+                                                {
+                                                    TestTaskId = tti.TestTaskId,
+                                                    Question = tti.TestTask.Question,
+                                                    CorrectAnswer = tti.TestTask.OptionsId != null ?
+                                                        _context.OptionAnswer
+                                                            .Where(oa => oa.OptionId == tti.TestTask.OptionsId && oa.Correct)
+                                                            .Select(oa => oa.Id.ToString())
+                                                            .FirstOrDefault() :
+                                                        tti.TestTask.Answer,
+                                                    Options = tti.TestTask.OptionsId != null ? new OptionsDto
+                                                    {
+                                                        Id = tti.TestTask.OptionsId.Value,
+                                                        SingleSelect = tti.TestTask.Options.SingleSelect,
+                                                        OptionAnswers = _context.OptionAnswer
+                                                            .Where(oa => oa.OptionId == tti.TestTask.OptionsId)
+                                                            .Select(oa => new OptionAnswerDto
+                                                            {
+                                                                Id = oa.Id,
+                                                                Content = oa.Content,
+                                                                Correct = oa.Correct
+                                                            }).ToList()
+                                                    } : null,
+                                                    StudentAnswer = tti.StudentAnswer,
+                                                    IsCorrect = tti.Correct
+                                                }).ToList()
+                                            })
+                                            .FirstOrDefaultAsync();
+
+
+            return testInstanceResultDto;
+
+
+        }
+
     }
 }

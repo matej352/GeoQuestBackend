@@ -19,9 +19,9 @@ namespace GeoQuest.Services.Implementation
         }
 
 
-        public async Task<IEnumerable<TestInstanceDto>> GetTestInstances(int studentId)
+        public async Task<IEnumerable<TestInstanceDto>> GetTestInstances(int studentId, bool finished)
         {
-            var instances = await _testInstanceRepository.GetTestInstances(studentId);
+            var instances = await _testInstanceRepository.GetTestInstances(studentId, finished);
 
             var dtos = instances.Select(t => t.AsTestInstanceDto()).ToList();
 
@@ -51,6 +51,17 @@ namespace GeoQuest.Services.Implementation
         public async Task UpdateElapsedTime(int instanceId, TimeSpan elapsedTime)
         {
             await _testInstanceRepository.UpdateElapsedTime(instanceId, elapsedTime, _userContext.Id);
+        }
+
+        public async Task<TestInstanceResultDto> GetTestInstanceResult(int testInstanceId)
+        {
+            //provjeri je li user admin ili ako je student da gleda svoj ipit, a ne nečiji tuđi
+
+            var result = await _testInstanceRepository.GetTestInstanceResult(testInstanceId);
+
+            return result;
+
+
         }
     }
 }

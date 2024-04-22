@@ -36,15 +36,40 @@ namespace GeoQuest.Controllers
 
         }
 
+
+        [Authorize(Roles = "Student")]
+        [HttpGet]
+        [Route("TestInstances/Previous")]
+        public async Task<ActionResult<IEnumerable<TestInstanceDto>>> PreviousTestInstances()
+        {
+
+            var tests = await _testInstanceService.GetTestInstances(_userContext.Id, true);
+
+            return Ok(tests);
+
+        }
+
         [Authorize(Roles = "Student")]
         [HttpGet]
         [Route("TestInstance")]
         public async Task<ActionResult<TestInstanceDetailsDto>> TestInstance(int testInstanceId)
         {
 
-            var tests = await _testInstanceService.GetTestInstance(testInstanceId);
+            var test = await _testInstanceService.GetTestInstance(testInstanceId);
 
-            return Ok(tests);
+            return Ok(test);
+
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("TestInstance/Result")]
+        public async Task<ActionResult<TestInstanceResultDto>> GetTestInstanceResult(int testInstanceId)
+        {
+
+            var result = await _testInstanceService.GetTestInstanceResult(testInstanceId);
+
+            return Ok(result);
 
         }
 
