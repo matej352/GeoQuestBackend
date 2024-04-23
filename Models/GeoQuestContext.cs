@@ -37,9 +37,9 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC076898C3F9");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC072CA550AF");
 
-            entity.HasIndex(e => e.Email, "UQ__Account__A9D1053442662C4E").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Account__A9D10534D0144D70").IsUnique();
 
             entity.Property(e => e.Email)
                 .IsRequired()
@@ -73,13 +73,13 @@ public partial class GeoQuestContext : DbContext
                         .HasConstraintName("FK__StudentSu__Stude__3A81B327"),
                     j =>
                     {
-                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A3D88A6532");
+                        j.HasKey("StudentId", "SubjectId").HasName("PK__StudentS__A80491A3B3F64F4D");
                     });
         });
 
         modelBuilder.Entity<OptionAnswer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC0715490824");
+            entity.HasKey(e => e.Id).HasName("PK__OptionAn__3214EC07208F43C0");
 
             entity.Property(e => e.Content)
                 .IsRequired()
@@ -93,12 +93,12 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Options>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC07F4AB9505");
+            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC07918094FD");
         });
 
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC0724558253");
+            entity.HasKey(e => e.Id).HasName("PK__Subject__3214EC0703F50458");
 
             entity.Property(e => e.Description)
                 .HasMaxLength(1000)
@@ -116,7 +116,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<Test>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC07A73611A1");
+            entity.HasKey(e => e.Id).HasName("PK__Test__3214EC071D98C28C");
 
             entity.Property(e => e.Description)
                 .IsRequired()
@@ -140,7 +140,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC075CA04356");
+            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC0757E93C4E");
 
             entity.HasOne(d => d.Student).WithMany(p => p.TestInstance)
                 .HasForeignKey(d => d.StudentId)
@@ -155,7 +155,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestInstanceBase>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC071872B443");
+            entity.HasKey(e => e.Id).HasName("PK__TestInst__3214EC0727502EB3");
 
             entity.HasOne(d => d.Test).WithMany(p => p.TestInstanceBase)
                 .HasForeignKey(d => d.TestId)
@@ -165,17 +165,16 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestTask>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07F728726E");
+            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC079940F9F2");
 
-            entity.Property(e => e.Answer)
-                .IsRequired()
-                .IsUnicode(false);
+            entity.Property(e => e.Answer).IsUnicode(false);
             entity.Property(e => e.MapCenter)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.MapType)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.NonMapPoint).IsUnicode(false);
             entity.Property(e => e.Question)
                 .IsRequired()
                 .IsUnicode(false);
@@ -192,7 +191,7 @@ public partial class GeoQuestContext : DbContext
 
         modelBuilder.Entity<TestTaskInstance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07C5AB78D1");
+            entity.HasKey(e => e.Id).HasName("PK__TestTask__3214EC07E6DD5109");
 
             entity.Property(e => e.StudentAnswer).IsUnicode(false);
 

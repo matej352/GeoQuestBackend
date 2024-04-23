@@ -39,6 +39,7 @@ namespace GeoQuest.Repositories.Implementation
                         Id = tti.Id,
                         Question = tti.TestTask.Question,
                         Answer = tti.StudentAnswer,
+                        NonMapPoint = tti.TestTask.NonMapPoint,
                         Type = (TaskType)tti.TestTask.Type,
                         TestInstanceId = tti.TestInstanceId,
                         Options = tti.TestTask.Options != null ? new TaskInstanceOptionsDto

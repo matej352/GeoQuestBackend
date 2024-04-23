@@ -17,6 +17,8 @@ public partial class TestTask
 
     public string Answer { get; set; }
 
+    public string NonMapPoint { get; set; }
+
     public int Type { get; set; }
 
     public int? OptionsId { get; set; }

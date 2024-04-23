@@ -7,7 +7,8 @@ namespace GeoQuest.DTOs
     {
         public int Id { get; set; }
         public string Question { get; set; }
-        public string Answer { get; set; }
+        public string? Answer { get; set; }
+        public string? NonMapPoint { get; set; }
         public TaskType Type { get; set; } // Assuming TaskType is an enum for different task types
         public OptionsDto? Options { get; set; } // Optional
         public int TestId { get; set; }

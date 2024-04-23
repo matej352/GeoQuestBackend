@@ -92,6 +92,7 @@ namespace GeoQuest.DTOs.Extensions
                 TestId = (int)task.TestId, //kod kreiranja baze sam trebo stavit da je taj key NOT NULL
                 Question = task.Question,
                 Answer = task.Answer,
+                NonMapPoint = task.NonMapPoint,
                 Type = (TaskType)task.Type, // Ensure that the task.Type conversion to TaskType enum is safe
                 Options = task.OptionsId != null ? new OptionsDto
                 {

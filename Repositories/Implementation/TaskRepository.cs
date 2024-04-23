@@ -56,7 +56,8 @@ namespace GeoQuest.Repositories.Implementation
             var taskEntity = new TestTask
             {
                 Question = taskDto.Question,
-                Answer = taskDto.Answer,
+                Answer = taskDto.Answer ?? null,
+                NonMapPoint = taskDto.NonMapPoint ?? null,
                 Type = (int)taskDto.Type,
                 TestId = test.Id,
                 // Do not set OptionsId here; it will be set upon saving Options
