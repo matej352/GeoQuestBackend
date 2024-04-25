@@ -10,6 +10,7 @@ namespace GeoQuest.Repositories
         public Task<TestInstance> GetTestInstance(int testInstanceId);
         public Task StartTestInstance(int instanceId, int studentId);
         public Task FinishTestInstance(int instanceId, TimeSpan elapsedTime, int studentId);
+        public Task AutoGradeTestInstance(int instanceId);
         public Task UpdateElapsedTime(int instanceId, TimeSpan elapsedTime, int studentId);
         public Task<TestInstanceResultDto> GetTestInstanceResult(int testInstanceId);
     }

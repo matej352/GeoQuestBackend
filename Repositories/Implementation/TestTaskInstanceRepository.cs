@@ -1,4 +1,5 @@
 ﻿using GeoQuest.DTOs;
+using GeoQuest.Enums;
 using GeoQuest.Models;
 using Microsoft.EntityFrameworkCore;
 

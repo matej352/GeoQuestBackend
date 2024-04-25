@@ -1,4 +1,6 @@
-﻿namespace GeoQuest.DTOs
+﻿using GeoQuest.Enums;
+
+namespace GeoQuest.DTOs
 {
     public class TaskInstanceDto
     {

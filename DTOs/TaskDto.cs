@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GeoQuest.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Principal;
 
 namespace GeoQuest.DTOs
@@ -14,16 +15,6 @@ namespace GeoQuest.DTOs
         public int TestId { get; set; }
 
         // If you're using Entity Framework or similar ORM, you might need navigation properties here
-    }
-
-    public enum TaskType
-    {
-        MarkPoint = 1,
-        MarkPolygon,
-        SelectPoint,
-        SelectPolygon,
-        NonMap
-        // Add more types as needed
     }
 
     public class OptionsDto

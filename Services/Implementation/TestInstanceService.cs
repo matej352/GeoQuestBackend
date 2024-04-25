@@ -37,6 +37,9 @@ namespace GeoQuest.Services.Implementation
         public async Task FinishTestInstance(int instanceId, TimeSpan elapsedTime)
         {
             await _testInstanceRepository.FinishTestInstance(instanceId, elapsedTime, _userContext.Id);
+
+            await _testInstanceRepository.AutoGradeTestInstance(instanceId);
+
         }
 
         public async Task<TestInstanceDetailsDto> GetTestInstance(int testInstanceId)
