@@ -29,6 +29,11 @@ namespace GeoQuest.Services.Implementation
             return await _testTaskInstanceRepository.GetOnGoingTestTaskInstances(testInstanceId, _userContext.Id);
         }
 
+        public async Task GradeTestTaskInstance(GradeTestTaskInstanceDto grade)
+        {
+            await _testTaskInstanceRepository.GradeTestTaskInstance(grade, _userContext.Id);
+        }
+
         public async Task SaveOnGoingTestTaskInstanceAnswer(TestTaskInstanceAnswerSaveDto saveAnswer)
         {
             await _testTaskInstanceRepository.SaveOnGoingTestTaskInstanceAnswer(saveAnswer, _userContext.Id);

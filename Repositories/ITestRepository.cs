@@ -13,5 +13,7 @@ namespace GeoQuest.Repositories
 
         public Task PublishTest(int testId);
 
+        public Task<IEnumerable<TestPublishedDto>> GetPublishedTests(int teacherId);
+        public Task<TestPublishedDetailsDto> GetPublishedTestOverview(int testInstanceBaseId);
     }
 }

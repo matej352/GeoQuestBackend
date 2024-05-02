@@ -70,11 +70,36 @@ namespace GeoQuest.Controllers
 
         [Authorize(Roles = "Teacher")]
         [HttpGet]
+        [Route("Tests/Published")]
+        public async Task<ActionResult<IEnumerable<TestPublishedDto>>> PublishedTests()
+        {
+
+            var tests = await _testService.GetPublishedTests(_userContext.Id);
+
+            return Ok(tests);
+
+        }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
         [Route("Test")]
         public async Task<ActionResult<TestDto>> Test(int testId)
         {
 
             var test = await _testService.GetTest(testId);
+
+            return Ok(test);
+
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        [Route("Test/Published/Overview")]
+        public async Task<ActionResult<TestPublishedDetailsDto>> PublishedTestOverview(int testInstanceBaseId)
+        {
+
+            var test = await _testService.GetPublishedTestOverview(testInstanceBaseId);
 
             return Ok(test);
 

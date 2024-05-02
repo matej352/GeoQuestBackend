@@ -12,7 +12,7 @@ namespace GeoQuest.DTOs
 
         public List<StudentDto> Students { get; set; }
 
-        public List<TestInstanceBaseDto> TestInstancesBase { get; set; }
+        public List<TestPublishedDto> PublishedTests { get; set; }
 
     }
 }

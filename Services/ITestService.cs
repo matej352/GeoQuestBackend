@@ -11,5 +11,8 @@ namespace GeoQuest.Services
         public Task<IEnumerable<TestDto>> GetTests(int teacherId);
 
         public Task<TestDto> GetTest(int testId);
+
+        public Task<IEnumerable<TestPublishedDto>> GetPublishedTests(int teacherId);
+        public Task<TestPublishedDetailsDto> GetPublishedTestOverview(int testInstanceBaseId);
     }
 }

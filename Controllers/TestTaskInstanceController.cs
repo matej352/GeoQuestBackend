@@ -52,5 +52,19 @@ namespace GeoQuest.Controllers
         }
 
 
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [Route("Grade")]
+        public async Task<ActionResult> GradeTestTaskInstance(GradeTestTaskInstanceDto grade)
+        {
+
+            await _testTaskInstanceService.GradeTestTaskInstance(grade);
+
+            return NoContent();
+
+        }
+
+
     }
 }

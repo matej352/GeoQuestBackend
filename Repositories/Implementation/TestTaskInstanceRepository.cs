@@ -59,6 +59,7 @@ namespace GeoQuest.Repositories.Implementation
                     .ToListAsync();
         }
 
+
         public async Task SaveOnGoingTestTaskInstanceAnswer(TestTaskInstanceAnswerSaveDto saveAnswer, int studentId)
         {
             var taskInstance = await _context.TestTaskInstance
@@ -72,6 +73,37 @@ namespace GeoQuest.Repositories.Implementation
             }
 
             taskInstance.StudentAnswer = saveAnswer.Answer; // u slučaju zadatka označi točkom/poligonom na karti, to će biti lat lng niz, u slučaju odabira od ponuđenog, to će biti Id opcije
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task GradeTestTaskInstance(GradeTestTaskInstanceDto grade, int teacherId)
+        {
+            var taskInstance = await _context.TestTaskInstance
+                  .Include(tti => tti.TestInstance)
+                    .Include(tti => tti.TestInstance.TestInstanceBase)
+                .Where(tti => tti.Id == grade.Id).FirstOrDefaultAsync();
+
+            if (taskInstance == null)
+            {
+                throw new Exception($"Test task instance with id = {grade.Id} does not exist!");
+            }
+
+            var testsOfTeacher = await _context.Test
+                                             .Where(t => t.TeacherId == teacherId)
+                                             .ToListAsync();
+
+            var isTestInTeacherTests = testsOfTeacher.Any(t => t.Id == taskInstance.TestInstance.TestInstanceBase.TestId);
+
+            if (!isTestInTeacherTests)
+            {
+                throw new Exception($"Techer is not owner of Test task instance with id = {grade.Id}!");
+            }
+
+
+            taskInstance.Correct = grade.Correct;
+            taskInstance.Checked = true;
 
             await _context.SaveChangesAsync();
         }

@@ -112,7 +112,7 @@ namespace GeoQuest.Repositories.Implementation
         public async Task<TestInstanceResultDto> GetTestInstanceResult(int testInstanceId)
         {
 
-
+            // ovo mogu obrisat
             var testTaskInstances = await _context.TestTaskInstance
                   .Where(tti => tti.TestInstanceId == testInstanceId)
                   .Select(tti => new
@@ -129,12 +129,18 @@ namespace GeoQuest.Repositories.Implementation
 
 
             var testInstanceResultDto = await _context.TestInstance
+                                            .Include(ti => ti.Student)
+                                            .Include(ti => ti.TestInstanceBase)
+                                            .Include(ti => ti.TestInstanceBase.Test)
                                             .Where(ti => ti.Id == testInstanceId)
                                             .Select(ti => new TestInstanceResultDto
                                             {
                                                 TestInstanceId = ti.Id,
+                                                TestName = ti.TestInstanceBase.Test.Name,
+                                                Student = ti.Student.FirstName + " " + ti.Student.LastName,
                                                 AllChecked = ti.TestTaskInstance.All(tti => tti.Checked) ? true : false,
-                                                TotalPoints = ti.TestTaskInstance.Count(tt => tt.Correct),    // Each correct task is 1 point
+                                                StudentTotalPoints = ti.TestTaskInstance.Count(tt => tt.Correct),    // Each correct task is 1 point,
+                                                TestTotalPoints = ti.TestTaskInstance.Count(),    // Each correct task is 1 point
                                                 SuccessPercentage = (double)ti.TestTaskInstance.Count(tt => tt.Checked && tt.Correct) / ti.TestTaskInstance.Count(tt => tt.Checked) * 100,
                                                 TestTasks = ti.TestTaskInstance.Select(tti => new TestTaskResultDto
                                                 {
@@ -142,6 +148,7 @@ namespace GeoQuest.Repositories.Implementation
                                                     Type = (TaskType)tti.TestTask.Type,
                                                     Checked = tti.Checked,
                                                     Question = tti.TestTask.Question,
+                                                    NonMapPoint = tti.TestTask.NonMapPoint,
                                                     CorrectAnswer = tti.TestTask.OptionsId != null ?
                                                         _context.OptionAnswer
                                                             .Where(oa => oa.OptionId == tti.TestTask.OptionsId && oa.Correct)

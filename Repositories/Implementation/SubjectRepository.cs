@@ -68,13 +68,16 @@ namespace GeoQuest.Repositories.Implementation
                     LastName = st.LastName,
                     Email = st.Email,
                 }).ToList(),
-                TestInstancesBase = s.Test
-                    .SelectMany(t => t.TestInstanceBase)
-                    .Select(ti => new TestInstanceBaseDto
+                PublishedTests = s.Test.SelectMany(t => t.TestInstanceBase)
+                    .Select(ti => new TestPublishedDto
                     {
                         Id = ti.Id,
-                        TestName = ti.Test.Name,
-                        InstancesCount = ti.InstancesCount,
+                        TeacherId = ti.Test.TeacherId,
+                        Duration = ti.Test.Duration,
+                        Name = ti.Test.Name,
+                        Description = ti.Test.Description,
+                        FinishedInstanceCount = ti.TestInstance.Count(ti => ti.Finished),
+                        InstanceCount = ti.InstancesCount,
                         Active = ti.Active
                     }).ToList()
             })
@@ -90,7 +93,9 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<IEnumerable<Subject>> GetSubjects(int teacherId)
         {
-            var subjects = await _context.Subject.Where(subject => subject.TeacherId == teacherId).ToListAsync();
+            var subjects = await _context.Subject
+                .Include(s => s.Student)
+                .Where(subject => subject.TeacherId == teacherId).ToListAsync();
             return subjects;
         }
 

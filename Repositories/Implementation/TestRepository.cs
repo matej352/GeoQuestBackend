@@ -35,6 +35,34 @@ namespace GeoQuest.Repositories.Implementation
             return tests;
         }
 
+
+
+        public async Task<IEnumerable<TestPublishedDto>> GetPublishedTests(int teacherId)
+        {
+            var testPublishedDtos = await _context.TestInstanceBase
+                                        .Include(t => t.Test)
+                                        .Include(t => t.Test.Subject)
+                                        .Where(t => t.Test.TeacherId == teacherId) // Filter by teacherId
+                                        .Select(t => new TestPublishedDto
+                                        {
+                                            Id = t.Id,
+                                            TeacherId = t.Test.TeacherId,
+                                            Duration = t.Test.Duration,
+                                            Name = t.Test.Name,
+                                            Description = t.Test.Description,
+                                            Subject = t.Test.Subject.Name, // Assuming you have a navigation property Subject
+                                            FinishedInstanceCount = t.TestInstance.Count(ti => ti.Finished), // Count finished TestInstances
+                                            InstanceCount = t.InstancesCount, // Total InstanceCount from TestInstanceBase
+                                            Active = t.Active // Active status from TestInstanceBase
+                                        })
+                                       .ToListAsync();
+
+
+            return testPublishedDtos;
+        }
+
+
+
         public async Task PublishTest(int testId)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -65,6 +93,11 @@ namespace GeoQuest.Repositories.Implementation
                         .Where(t => t.Id == testId)
                         .SelectMany(t => t.Subject.Student)
                         .ToList();
+
+
+                    testInstanceBase.InstancesCount = subjectStudents.Count;
+                    await _context.SaveChangesAsync();
+
 
                     // 3. Create a TestInstance for each student and assign it the appropriate TestTaskInstances
                     foreach (var student in subjectStudents)
@@ -128,7 +161,82 @@ namespace GeoQuest.Repositories.Implementation
             return newTest.Id;
         }
 
+        public async Task<TestPublishedDetailsDto> GetPublishedTestOverview(int testInstanceBaseId)
+        {
+            var testInstanceBase = await _context.TestInstanceBase
+                .Include(ti => ti.Test)
+                    .ThenInclude(t => t.Subject)
+                .FirstOrDefaultAsync(ti => ti.Id == testInstanceBaseId);
+
+            if (testInstanceBase == null)
+            {
+                throw new Exception($"TestInstanceBase with id = {testInstanceBaseId} does not exists");
+            }
+
+            var testInstances = await _context.TestInstance
+                .Include(ti => ti.TestTaskInstance)
+                .Where(ti => ti.TestInstanceBaseId == testInstanceBaseId)
+                .ToListAsync();
+
+            var finishedInstanceCount = testInstances.Count(ti => ti.Finished);
+            var instanceCount = testInstances.Count;
+            var active = testInstanceBase.Active;
+
+            var avgElapsedTime = TimeSpan.Zero;
+            if (finishedInstanceCount > 0)
+            {
+                avgElapsedTime = TimeSpan.FromMilliseconds(testInstances.Where(ti => ti.Finished)
+                    .Average(ti => ti.ElapsedTime?.TotalMilliseconds ?? 0));
+            }
+
+            var checkedInstanceCount = testInstances.Count(ti => ti.TestTaskInstance.All(tti => tti.Checked));
 
 
+            // pretpostavljajuci da 1 task nosi 1 bod, ukupno se može sakupit onoliko bodova koliko ima taskova u testu
+            var totalPoints = testInstances.First().TestTaskInstance.Count();
+
+
+
+
+            // test instanca je cijela checked ako su svi taskovi u njoj checked (znaci teacher je ocjenio sve non map taskove)
+            var checkedInstances = testInstances.Where(ti => ti.TestTaskInstance.All(tti => tti.Checked)).ToList();
+
+
+            var correctTasksCount = checkedInstances.Sum(ti => ti.TestTaskInstance.Count(tti => tti.Correct));
+            var checkedInstancesCount = checkedInstances.Count;
+
+            var avgPoints = checkedInstancesCount > 0 ? (decimal)correctTasksCount / checkedInstancesCount : 0;
+
+
+            var testInstancesDto = await _context.TestInstance
+                .Where(ti => ti.TestInstanceBaseId == testInstanceBaseId)
+                .Select(ti => new TestInstanceForTeacherDto
+                {
+                    Id = ti.Id,
+                    Student = ti.Student.FirstName + " " + ti.Student.LastName,
+                    ElapsedTime = ti.ElapsedTime ?? TimeSpan.Zero,
+                    Points = ti.TestTaskInstance.Count(tti => tti.Correct),
+                    Finished = ti.Finished,
+                    Checked = ti.TestTaskInstance.All(tti => tti.Checked)
+                })
+                .ToListAsync();
+
+            return new TestPublishedDetailsDto
+            {
+                Id = testInstanceBase.Test.Id,
+                Duration = testInstanceBase.Test.Duration,
+                Name = testInstanceBase.Test.Name,
+                Description = testInstanceBase.Test.Description,
+                Subject = testInstanceBase.Test.Subject.Name,
+                FinishedInstanceCount = finishedInstanceCount,
+                InstanceCount = instanceCount,
+                Active = active,
+                CheckedInstanceCount = checkedInstanceCount,
+                AvgElapsedTime = avgElapsedTime,
+                TotalPoints = totalPoints,
+                AvgPoints = avgPoints,
+                TestInstances = testInstancesDto
+            };
+        }
     }
 }

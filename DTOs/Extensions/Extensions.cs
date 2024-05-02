@@ -27,6 +27,7 @@ namespace GeoQuest.DTOs.Extensions
                 Id = s.Id,
                 Name = s.Name,
                 Description = s.Description,
+                StudentsCount = s.Student.Count,
             };
         }
 

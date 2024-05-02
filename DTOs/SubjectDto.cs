@@ -12,5 +12,7 @@ namespace GeoQuest.DTOs
         [Required]
         public string Description { get; set; }
 
+        public int StudentsCount { get; set; }
+
     }
 }

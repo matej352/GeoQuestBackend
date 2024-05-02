@@ -41,6 +41,12 @@ namespace GeoQuest.Services.Implementation
             return testDto;
         }
 
+        public async Task<TestPublishedDetailsDto> GetPublishedTestOverview(int testInstanceBaseId)
+        {
+            return await _testRepository.GetPublishedTestOverview(testInstanceBaseId);
+        }
+
+
         public async Task<IEnumerable<TestDto>> GetTests(int teacherId)
         {
             var tests = await _testRepository.GetTests(teacherId);
@@ -48,6 +54,11 @@ namespace GeoQuest.Services.Implementation
             List<TestDto> testDtoList = tests.Select(t => t.AsTestDto()).ToList();
 
             return testDtoList;
+        }
+
+        public async Task<IEnumerable<TestPublishedDto>> GetPublishedTests(int teacherId)
+        {
+            return await _testRepository.GetPublishedTests(teacherId);
         }
 
         public async Task PublishTest(int testId)
