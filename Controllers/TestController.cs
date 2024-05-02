@@ -54,6 +54,18 @@ namespace GeoQuest.Controllers
 
         }
 
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [Route("Close")]
+        public async Task<ActionResult<TestDto>> CloseTest([FromBody] int testInstanceBaseId)
+        {
+
+            await _testService.CloseTest(testInstanceBaseId);
+
+            return Ok();
+
+        }
+
 
 
         [Authorize(Roles = "Teacher")]

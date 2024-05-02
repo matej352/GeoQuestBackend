@@ -65,5 +65,10 @@ namespace GeoQuest.Services.Implementation
         {
             await _testRepository.PublishTest(testId);
         }
+
+        public async Task CloseTest(int testInstanceBaseId)
+        {
+            await _testRepository.CloseTest(testInstanceBaseId);
+        }
     }
 }

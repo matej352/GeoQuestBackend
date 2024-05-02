@@ -144,6 +144,52 @@ namespace GeoQuest.Repositories.Implementation
             }
         }
 
+        public async Task CloseTest(int testInstanceBaseId)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    // Find the TestInstanceBase
+                    var testInstanceBase = await _context.TestInstanceBase
+                        .Include(tib => tib.TestInstance)
+                        .ThenInclude(ti => ti.TestTaskInstance)
+                        .Where(tib => tib.Id == testInstanceBaseId)
+                        .FirstOrDefaultAsync();
+
+                    if (testInstanceBase == null)
+                    {
+                        throw new Exception($"TestInstanceBase with id = {testInstanceBaseId} does not exist");
+                    }
+
+                    testInstanceBase.Active = false;
+                    await _context.SaveChangesAsync();
+
+                    // Kod zatvaranja ispita, svi ispiti studenata koji nisu ni pokrenuti, stavlja im se finished na true, svakom tasku tog ispita se stavlja checked na true, correct ostaje false
+                    // Update unfinished TestInstances to finished
+                    foreach (var testInstance in testInstanceBase.TestInstance.Where(ti => !ti.Finished))
+                    {
+                        testInstance.Finished = true;
+
+                        // Update TestTaskInstances to checked
+                        foreach (var testTaskInstance in testInstance.TestTaskInstance)
+                        {
+                            testTaskInstance.Checked = true;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception exception)
+                {
+                    transaction.Rollback();
+                    throw new Exception($"Problem while closing TestInstanceBase with ID {testInstanceBaseId}! " + exception.Message);
+                }
+            }
+        }
+
         public async Task<int> SaveTest(CreateTestDto test, int teacherId)
         {
             Test newTest = new Test

@@ -8,6 +8,8 @@ namespace GeoQuest.Services
 
         public Task PublishTest(int testId);
 
+        public Task CloseTest(int testInstanceBaseId);
+
         public Task<IEnumerable<TestDto>> GetTests(int teacherId);
 
         public Task<TestDto> GetTest(int testId);

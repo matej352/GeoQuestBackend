@@ -112,20 +112,12 @@ namespace GeoQuest.Repositories.Implementation
         public async Task<TestInstanceResultDto> GetTestInstanceResult(int testInstanceId)
         {
 
-            // ovo mogu obrisat
-            var testTaskInstances = await _context.TestTaskInstance
-                  .Where(tti => tti.TestInstanceId == testInstanceId)
-                  .Select(tti => new
-                  {
-                      tti.StudentAnswer,
-                      CorrectAnswer = tti.TestTask.Answer != null ? tti.TestTask.Answer :
-                          _context.OptionAnswer
-                              .Where(oa => oa.OptionId == tti.TestTask.OptionsId && oa.Correct)
-                              .Select(oa => oa.Content)
-                              .FirstOrDefault()
-                  })
-                  .ToListAsync();
 
+            var testInstance = await _context.TestInstance.Where(ti => ti.Id == testInstanceId && ti.Finished == true).FirstOrDefaultAsync();
+            if (testInstance == null)
+            {
+                throw new Exception($"TestInstance with id={testInstanceId} has not been finished with solving");
+            }
 
 
             var testInstanceResultDto = await _context.TestInstance
