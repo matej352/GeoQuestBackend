@@ -2,6 +2,7 @@
 using GeoQuest.Enums;
 using GeoQuest.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GeoQuest.Repositories.Implementation
 {
@@ -38,6 +39,9 @@ namespace GeoQuest.Repositories.Implementation
                     .Select(tti => new TaskInstanceDto
                     {
                         Id = tti.Id,
+                        MapCenter = tti.TestTask.MapCenter,
+                        MapType = (MapType?)tti.TestTask.MapType,
+                        MapZoomLevel = tti.TestTask.MapZoomLevel,
                         Question = tti.TestTask.Question,
                         Answer = tti.StudentAnswer,
                         NonMapPoint = tti.TestTask.NonMapPoint,

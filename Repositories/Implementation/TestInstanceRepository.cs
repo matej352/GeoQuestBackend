@@ -6,6 +6,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.OverlayNG;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace GeoQuest.Repositories.Implementation
 {
@@ -136,7 +137,10 @@ namespace GeoQuest.Repositories.Implementation
                                                 SuccessPercentage = (double)ti.TestTaskInstance.Count(tt => tt.Checked && tt.Correct) / ti.TestTaskInstance.Count(tt => tt.Checked) * 100,
                                                 TestTasks = ti.TestTaskInstance.Select(tti => new TestTaskResultDto
                                                 {
-                                                    Id = tti.TestTaskId,
+                                                    Id = tti.Id,
+                                                    MapCenter = tti.TestTask.MapCenter,
+                                                    MapType = (MapType?)tti.TestTask.MapType,   //vjv ne treba ? i u bazi mogu ovi podaci za Map biti not null, trenutno su nullable
+                                                    MapZoomLevel = tti.TestTask.MapZoomLevel,
                                                     Type = (TaskType)tti.TestTask.Type,
                                                     Checked = tti.Checked,
                                                     Question = tti.TestTask.Question,
@@ -266,10 +270,12 @@ namespace GeoQuest.Repositories.Implementation
             var distance = correctAnswerPoint.Distance(studentAnswerPoint);
 
             // Define the maximum allowed distance (radius) around the correct answer point
-            var maxDistance = 10000; // For example, 10000 meters
+            var maxDistanceInDegrees = 0.3; // For example, 0.3 degrees --> 111,000 meters per degree, so 0.3 * 111km = 33.3km   (10km, 30km, 50km, 100km)
 
-            // Check if the student's answer is within the maximum allowed distance from the correct answer point
-            if (distance <= maxDistance)
+
+
+            // Check if the student's answer is within the maximum allowed distance from the correct answer point  --> TODO: ISTESTIRATI!!!!
+            if (distance <= maxDistanceInDegrees)
             {
                 testTaskInstance.Correct = true;
             }
@@ -300,6 +306,20 @@ namespace GeoQuest.Repositories.Implementation
             List<Coordinate> answerCoords = ParseCoordinates(testTask.Answer);
             List<Coordinate> studentAnswerCoords = ParseCoordinates(testTaskInstance.StudentAnswer);
 
+            // Ensure closed linestring for answerCoords
+            if (answerCoords.First() != answerCoords.Last())
+            {
+                // Add the first coordinate to the end to close the linestring
+                answerCoords.Add(answerCoords.First());
+            }
+
+            // Ensure closed linestring for studentAnswerCoords
+            if (studentAnswerCoords.First() != studentAnswerCoords.Last())
+            {
+                // Add the first coordinate to the end to close the linestring
+                studentAnswerCoords.Add(studentAnswerCoords.First());
+            }
+
             // Create Polygon objects from the arrays of points
             Polygon answerPolygon = new Polygon(new LinearRing(answerCoords.ToArray()));
             Polygon studentAnswerPolygon = new Polygon(new LinearRing(studentAnswerCoords.ToArray()));
@@ -320,7 +340,7 @@ namespace GeoQuest.Repositories.Implementation
             // Calculate the percentage of overlap
             double overlapPercentage = (intersectionArea / minArea) * 100;  // between 0 and 100
 
-            if (overlapPercentage >= 80)
+            if (overlapPercentage >= 70)
             {
                 testTaskInstance.Correct = true;
             }

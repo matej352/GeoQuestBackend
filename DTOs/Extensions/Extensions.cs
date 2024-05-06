@@ -90,7 +90,10 @@ namespace GeoQuest.DTOs.Extensions
             return new TaskDto
             {
                 Id = task.Id,
-                TestId = (int)task.TestId, //kod kreiranja baze sam trebo stavit da je taj key NOT NULL
+                TestId = (int)task.TestId,
+                MapCenter = task.MapCenter,
+                MapType = (MapType?)task.MapType,   //vjv ne treba ? i u bazi mogu ovi podaci za Map biti not null, trenutno su nullable
+                MapZoomLevel = task.MapZoomLevel,
                 Question = task.Question,
                 Answer = task.Answer,
                 NonMapPoint = task.NonMapPoint,

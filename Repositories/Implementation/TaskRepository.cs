@@ -55,6 +55,9 @@ namespace GeoQuest.Repositories.Implementation
             // Convert TaskDto to Task entity
             var taskEntity = new TestTask
             {
+                MapCenter = taskDto.MapCenter,
+                MapType = (int)taskDto.MapType,
+                MapZoomLevel = taskDto.MapZoomLevel,
                 Question = taskDto.Question,
                 Answer = taskDto.Answer ?? null,
                 NonMapPoint = taskDto.NonMapPoint ?? null,

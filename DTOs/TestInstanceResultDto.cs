@@ -17,6 +17,9 @@ namespace GeoQuest.DTOs
     public class TestTaskResultDto
     {
         public int Id { get; set; }
+        public MapType? MapType { get; set; }
+        public string MapCenter { get; set; }
+        public int? MapZoomLevel { get; set; }
         public TaskType Type { get; set; }
         public string Question { get; set; }
         public string? CorrectAnswer { get; set; }

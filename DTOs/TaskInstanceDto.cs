@@ -5,6 +5,9 @@ namespace GeoQuest.DTOs
     public class TaskInstanceDto
     {
         public int Id { get; set; }
+        public MapType? MapType { get; set; }
+        public string MapCenter { get; set; }
+        public int? MapZoomLevel { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }  // this is student's answer
         public string? NonMapPoint { get; set; }
