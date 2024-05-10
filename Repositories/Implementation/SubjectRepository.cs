@@ -1,6 +1,7 @@
 ﻿using GeoQuest.DTOs;
 using GeoQuest.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace GeoQuest.Repositories.Implementation
 {
@@ -104,7 +105,7 @@ namespace GeoQuest.Repositories.Implementation
             Subject newSubject = new Subject
             {
                 Name = subject.Name,
-                Description = subject.Description,
+                Description = subject.Description ?? null,
                 TeacherId = teacherId,
             };
 
@@ -112,6 +113,24 @@ namespace GeoQuest.Repositories.Implementation
             await _context.SaveChangesAsync();
 
             return newSubject.Id;
+        }
+
+        public async Task<int> UpdateSubject(UpdateSubjectDto subject, int userId)
+        {
+            var _subject = await _context.Subject.FirstOrDefaultAsync(s => s.Id == subject.Id && s.TeacherId == userId);
+
+
+            if (_subject is null)
+            {
+                throw new Exception($"Subject with id = {subject.Id} does not exist or does not belong to teacher with id = {userId}");
+            }
+
+            _subject!.Name = subject.Name;
+            _subject!.Description = subject.Description;
+
+            await _context.SaveChangesAsync();
+
+            return _subject.Id;
         }
     }
 }

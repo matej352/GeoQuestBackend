@@ -70,5 +70,15 @@ namespace GeoQuest.Services.Implementation
         {
             await _testRepository.CloseTest(testInstanceBaseId);
         }
+
+        public async Task<TestDto> UpdateTest(CreateTestDto test)
+        {
+            var testId = await _testRepository.UpdateTest(test, _userContext.Id);
+
+            var _test = await _testRepository.GetTest(testId);
+
+            return _test.AsTestDto();
+        }
+
     }
 }

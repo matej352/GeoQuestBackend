@@ -64,6 +64,19 @@ namespace GeoQuest.Controllers
 
 
         [Authorize(Roles = "Teacher")]
+        [HttpPut]
+        [Route("Update")]
+        public async Task<ActionResult<SubjectDto>> UpdateSubject(UpdateSubjectDto subjectDto)
+        {
+
+            var updatedSubject = await _subjectService.UpdateSubject(subjectDto);
+
+            return Ok(updatedSubject);
+
+        }
+
+
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [Route("Students")]
         public async Task<ActionResult> AddStudents(int subjectId, List<int> studentIds)

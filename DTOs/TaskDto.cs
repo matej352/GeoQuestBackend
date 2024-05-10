@@ -10,7 +10,7 @@ namespace GeoQuest.DTOs
 
         public MapType? MapType { get; set; }
         public string MapCenter { get; set; }
-        public int? MapZoomLevel { get; set; }
+        public int MapZoomLevel { get; set; }
         public string Question { get; set; }
         public string? Answer { get; set; }
         public string? NonMapPoint { get; set; }

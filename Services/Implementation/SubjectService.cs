@@ -1,6 +1,7 @@
 ﻿using GeoQuest.DTOs;
 using GeoQuest.DTOs.Extensions;
 using GeoQuest.Middlewares.UserContext;
+using GeoQuest.Models;
 using GeoQuest.Repositories;
 using GeoQuest.Utils;
 
@@ -48,6 +49,15 @@ namespace GeoQuest.Services.Implementation
             List<SubjectDto> subjectDtoList = subjects.Select(s => s.AsSubjectDto()).ToList();
 
             return subjectDtoList;
+        }
+
+        public async Task<SubjectDto> UpdateSubject(UpdateSubjectDto subject)
+        {
+            var subjectId = await _subjectRepository.UpdateSubject(subject, _userContext.Id);
+
+            var _subject = await _subjectRepository.GetSubject(subjectId);
+
+            return _subject.AsSubjectDto();
         }
     }
 }

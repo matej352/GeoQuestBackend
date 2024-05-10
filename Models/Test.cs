@@ -15,6 +15,8 @@ public partial class Test
 
     public string Description { get; set; }
 
+    public bool Published { get; set; }
+
     public int SubjectId { get; set; }
 
     public int TeacherId { get; set; }

@@ -15,5 +15,6 @@ namespace GeoQuest.Repositories
         public Task<Subject> GetSubject(int id);
 
         public Task AddStudents(int subjectId, List<int> studentIds);
+        public Task<int> UpdateSubject(UpdateSubjectDto subject, int userId);
     }
 }

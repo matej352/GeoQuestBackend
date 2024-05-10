@@ -2,20 +2,14 @@
 
 namespace GeoQuest.DTOs
 {
-    public class CreateTestDto
+    public class UpdateSubjectDto
     {
-
         public int Id { get; set; }
-
-        [Required]
-        public TimeSpan Duration { get; set; }
 
         [Required]
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
-        public int SubjectId { get; set; }
     }
 }

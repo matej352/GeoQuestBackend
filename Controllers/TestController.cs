@@ -106,6 +106,18 @@ namespace GeoQuest.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
+        [HttpPut]
+        [Route("Update")]
+        public async Task<ActionResult<TestDto>> UpdateTest(CreateTestDto test)
+        {
+
+            var _test = await _testService.UpdateTest(test);
+
+            return Ok(_test);
+
+        }
+
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         [Route("Test/Published/Overview")]
         public async Task<ActionResult<TestPublishedDetailsDto>> PublishedTestOverview(int testInstanceBaseId)

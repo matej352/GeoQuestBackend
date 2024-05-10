@@ -53,6 +53,7 @@ namespace GeoQuest.DTOs.Extensions
                 Description = t.Description,
                 Duration = t.Duration,
                 Subject = t.Subject.Name,
+                SubjectId = t.Subject.Id
             };
         }
 

@@ -14,5 +14,7 @@
 
         public string Subject { get; set; }
 
+        public int SubjectId { get; set; }
+
     }
 }

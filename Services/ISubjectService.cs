@@ -12,5 +12,7 @@ namespace GeoQuest.Services
         public Task<SubjectDto> CreateSubject(SubjectDto subject);
 
         public Task AddStudents(int subjectId, List<int> studentIds);
+
+        public Task<SubjectDto> UpdateSubject(UpdateSubjectDto subjectDto);
     }
 }

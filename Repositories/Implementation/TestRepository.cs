@@ -31,7 +31,7 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<IEnumerable<Test>> GetTests(int teacherId)
         {
-            var tests = await _context.Test.Include(t => t.Subject).Where(t => t.TeacherId == teacherId).ToListAsync();
+            var tests = await _context.Test.Include(t => t.Subject).Where(t => t.TeacherId == teacherId && t.Published == false).ToListAsync();
             return tests;
         }
 
@@ -87,6 +87,14 @@ namespace GeoQuest.Repositories.Implementation
                     {
                         throw new Exception($"Test with id = {testId} does not exists");
                     }
+
+                    if (test.Published)
+                    {
+                        throw new Exception($"Test with id = {testId} is already published!");
+                    }
+
+                    test.Published = true;
+                    await _context.SaveChangesAsync();
 
                     // 2. Retrieve all students associated with the subject of the test
                     var subjectStudents = _context.Test.Include(t => t.Subject)
@@ -196,9 +204,10 @@ namespace GeoQuest.Repositories.Implementation
             {
                 Name = test.Name,
                 Duration = test.Duration,
-                Description = test.Description,
+                Description = test.Description ?? null,
                 SubjectId = test.SubjectId,
                 TeacherId = teacherId,
+                Published = false
             };
 
             _context.Add(newTest);
@@ -283,6 +292,26 @@ namespace GeoQuest.Repositories.Implementation
                 AvgPoints = avgPoints,
                 TestInstances = testInstancesDto
             };
+        }
+
+        public async Task<int> UpdateTest(CreateTestDto test, int id)
+        {
+            var _test = await _context.Test.FirstOrDefaultAsync(t => t.Id == test.Id && t.TeacherId == id);
+
+
+            if (_test is null)
+            {
+                throw new Exception($"Test with id = {test.Id} does not exist or does not belong to teacher with id = {id}");
+            }
+
+            _test.Name = test.Name;
+            _test.Description = test.Description;
+            _test.SubjectId = test.SubjectId;
+            _test.Duration = test.Duration;
+
+            await _context.SaveChangesAsync();
+
+            return _test.Id;
         }
     }
 }
