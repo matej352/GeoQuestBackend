@@ -17,7 +17,11 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<Test> GetTest(int id)
         {
-            var _test = await _context.Test.Include(t => t.Subject).FirstOrDefaultAsync(t => t.Id == id);
+            var _test = await _context.Test
+                .Include(t => t.Subject)
+                .Include(t => t.Subject.Student)
+                .Include(t => t.TestTask)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (_test is null)
             {
@@ -31,7 +35,12 @@ namespace GeoQuest.Repositories.Implementation
 
         public async Task<IEnumerable<Test>> GetTests(int teacherId)
         {
-            var tests = await _context.Test.Include(t => t.Subject).Where(t => t.TeacherId == teacherId && t.Published == false).ToListAsync();
+            var tests = await _context.Test
+                .Include(t => t.Subject)
+                .Include(t => t.Subject.Student)
+                .Include(t => t.TestTask)
+                .Where(t => t.TeacherId == teacherId && t.Published == false)
+                .ToListAsync();
             return tests;
         }
 
@@ -63,7 +72,7 @@ namespace GeoQuest.Repositories.Implementation
 
 
 
-        public async Task PublishTest(int testId)
+        public async Task<int> PublishTest(int testId)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -143,6 +152,8 @@ namespace GeoQuest.Repositories.Implementation
                     }
 
                     transaction.Commit();
+
+                    return testInstanceBase.Id;
                 }
                 catch (Exception exception)
                 {

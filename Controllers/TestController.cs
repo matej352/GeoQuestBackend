@@ -45,12 +45,12 @@ namespace GeoQuest.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [Route("Publish")]
-        public async Task<ActionResult<TestDto>> PublishTest([FromBody] int testId)
+        public async Task<ActionResult<int>> PublishTest([FromBody] int testId)
         {
 
-            await _testService.PublishTest(testId);
+            var testInstanceBaseId = await _testService.PublishTest(testId);
 
-            return Ok();
+            return Ok(testInstanceBaseId);
 
         }
 

@@ -16,5 +16,9 @@
 
         public int SubjectId { get; set; }
 
+        public int SubjectsStudentsCount { get; set; }
+
+        public int TestsTasksCount { get; set; }
+
     }
 }

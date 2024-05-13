@@ -6,7 +6,7 @@ namespace GeoQuest.Services
     {
         public Task<TestDto> CreateTest(CreateTestDto test);
 
-        public Task PublishTest(int testId);
+        public Task<int> PublishTest(int testId);
 
         public Task CloseTest(int testInstanceBaseId);
 

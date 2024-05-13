@@ -61,9 +61,9 @@ namespace GeoQuest.Services.Implementation
             return await _testRepository.GetPublishedTests(teacherId);
         }
 
-        public async Task PublishTest(int testId)
+        public async Task<int> PublishTest(int testId)
         {
-            await _testRepository.PublishTest(testId);
+            return await _testRepository.PublishTest(testId);
         }
 
         public async Task CloseTest(int testInstanceBaseId)
