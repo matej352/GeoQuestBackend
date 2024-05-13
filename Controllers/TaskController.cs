@@ -37,6 +37,18 @@ namespace GeoQuest.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<ActionResult<TaskDto>> DeleteTask(int taskId)
+        {
+
+            await _taskService.DeleteTask(taskId);
+
+            return Ok();
+
+        }
+
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         [Route("Tasks")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> Tasks(int testId)

@@ -14,6 +14,46 @@ namespace GeoQuest.Repositories.Implementation
             _context = context;
         }
 
+        public async Task DeleteTask(int taskId, int userId)
+        {
+            var _task = await _context.TestTask
+                .Include(t => t.Test)
+                .Include(t => t.Options)
+                .FirstOrDefaultAsync(t => t.Id == taskId && t.Test.TeacherId == userId);
+
+            if (_task is null)
+            {
+                throw new Exception($"Task with id = {taskId} does not exists or does not belong to teacher with id = {userId}");
+            }
+
+            var taskOptionsId = _task.Options?.Id;
+
+            if (taskOptionsId != null)
+            {
+                var _option = _context.Options.Find(taskOptionsId);
+
+                var _optionAnswer = _context.OptionAnswer
+                      .Include(oa => oa.Option)
+                      .Where(oa => oa.Option.Id == taskOptionsId);
+
+                if (_optionAnswer != null && _optionAnswer != null)
+                {
+                    _context.Options.Remove(_option!);
+                    foreach (var item in _optionAnswer)
+                    {
+                        _context.OptionAnswer.Remove(item);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+
+            _context.TestTask.Remove(_task);
+            await _context.SaveChangesAsync();
+
+        }
+
         public async Task<TestTask> GetTask(int id)
         {
             var _task = await _context.TestTask.Include(t => t.Test).Include(t => t.Options).Include(t => t.Options.OptionAnswer).FirstOrDefaultAsync(t => t.Id == id);

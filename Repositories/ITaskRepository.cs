@@ -11,5 +11,6 @@ namespace GeoQuest.Repositories
         public Task<TestTask> GetTask(int id);
 
         public Task<IEnumerable<TestTask>> GetTasks(int testId);
+        public Task DeleteTask(int taskId, int userId);
     }
 }

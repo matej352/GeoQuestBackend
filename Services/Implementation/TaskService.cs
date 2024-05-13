@@ -3,6 +3,7 @@ using GeoQuest.DTOs.Extensions;
 using GeoQuest.Middlewares.UserContext;
 using GeoQuest.Repositories;
 using GeoQuest.Repositories.Implementation;
+using System.Threading.Tasks;
 
 namespace GeoQuest.Services.Implementation
 {
@@ -27,6 +28,11 @@ namespace GeoQuest.Services.Implementation
             var _task = await _taskRepository.GetTask(taskId);
 
             return _task.AsTaskDto();
+        }
+
+        public async Task DeleteTask(int taskId)
+        {
+            await _taskRepository.DeleteTask(taskId, _userContext.Id);
         }
 
         public async Task<IEnumerable<TaskDto>> GetTasks(int testId)
