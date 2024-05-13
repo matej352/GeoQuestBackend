@@ -236,7 +236,8 @@ namespace GeoQuest.Repositories.Implementation
                     break;
                 case TaskType.NonMap:
                     // Implement logic for NonMap task type
-                    // Non map task needs to be evaluated manually
+                    // Non map task needs to be evaluated manually, except if user did not answwer at all --> then task instance should be checked and set to incorrect
+                    await ProcessNonMapTask(testTask, testTaskInstance);
                     break;
                 default:
                     throw new Exception("Unsupported test task type");
@@ -393,6 +394,18 @@ namespace GeoQuest.Repositories.Implementation
             testTaskInstance.Checked = true;
 
             await _context.SaveChangesAsync();
+        }
+
+        private async Task ProcessNonMapTask(TestTask testTask, TestTaskInstance testTaskInstance)
+        {
+            if (testTaskInstance.StudentAnswer is null)
+            {
+                testTaskInstance.Correct = false;
+                testTaskInstance.Checked = true;
+                await _context.SaveChangesAsync();
+
+                return;
+            }
         }
 
 
