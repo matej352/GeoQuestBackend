@@ -15,6 +15,8 @@
 
         public string Subject { get; set; }
 
+        public string Score { get; set; }
+
 
     }
 

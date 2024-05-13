@@ -70,6 +70,7 @@ namespace GeoQuest.DTOs.Extensions
                 Description = t.TestInstanceBase.Test.Description,
                 Duration = t.TestInstanceBase.Test.Duration,
                 Subject = t.TestInstanceBase.Test.Subject.Name,
+                Score = $" {t.TestTaskInstance.Count(tt => tt.Checked && tt.Correct)} / {t.TestTaskInstance.Count()}"
             };
         }
 

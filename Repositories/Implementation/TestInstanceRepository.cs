@@ -31,6 +31,7 @@ namespace GeoQuest.Repositories.Implementation
             {
                 testInstances = await _context.TestInstance
                 .Include(t => t.TestInstanceBase.Test)
+                .Include(t => t.TestTaskInstance)
                 .Include(t => t.TestInstanceBase.Test.Teacher)
                 .Include(t => t.TestInstanceBase.Test.Subject)
                 .Where(t => t.StudentId == studentId && t.Finished == true).ToListAsync();
