@@ -105,6 +105,19 @@ namespace GeoQuest.Controllers
 
         }
 
+
+        [Authorize(Roles = "Student")]
+        [HttpGet]
+        [Route("TestByTestInstanceId")]
+        public async Task<ActionResult<TestDto>> TestByTestInstanceId(int testInstanceId)
+        {
+
+            var test = await _testService.GetTestByTestInstanceId(testInstanceId);
+
+            return Ok(test);
+
+        }
+
         [Authorize(Roles = "Teacher")]
         [HttpPut]
         [Route("Update")]

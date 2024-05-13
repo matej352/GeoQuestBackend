@@ -60,7 +60,7 @@ namespace GeoQuest.Repositories.Implementation
                                             Name = t.Test.Name,
                                             Description = t.Test.Description,
                                             Subject = t.Test.Subject.Name, // Assuming you have a navigation property Subject
-                                            FinishedInstanceCount = t.TestInstance.Count(ti => ti.Finished), // Count finished TestInstances
+                                            FinishedByStudentInstanceCount = t.TestInstance.Count(ti => ti.Started && ti.Finished), // Count finished TestInstances
                                             InstanceCount = t.InstancesCount, // Total InstanceCount from TestInstanceBase
                                             Active = t.Active // Active status from TestInstanceBase
                                         })
@@ -244,14 +244,17 @@ namespace GeoQuest.Repositories.Implementation
                 .Where(ti => ti.TestInstanceBaseId == testInstanceBaseId)
                 .ToListAsync();
 
+            // uzmi samo one instance koje su ucenici stvarno i pokrenuli i rijesili (jer se sa zatvaranjem ispita svim instancama iovako stavi finished=true)
+            var finishedByStudentsInstanceCount = testInstances.Count(ti => ti.Finished && ti.Started);
+
             var finishedInstanceCount = testInstances.Count(ti => ti.Finished);
             var instanceCount = testInstances.Count;
             var active = testInstanceBase.Active;
 
             var avgElapsedTime = TimeSpan.Zero;
-            if (finishedInstanceCount > 0)
+            if (finishedByStudentsInstanceCount > 0)
             {
-                avgElapsedTime = TimeSpan.FromMilliseconds(testInstances.Where(ti => ti.Finished)
+                avgElapsedTime = TimeSpan.FromMilliseconds(testInstances.Where(ti => ti.Finished && ti.Started)
                     .Average(ti => ti.ElapsedTime?.TotalMilliseconds ?? 0));
             }
 
@@ -282,6 +285,7 @@ namespace GeoQuest.Repositories.Implementation
                     Student = ti.Student.FirstName + " " + ti.Student.LastName,
                     ElapsedTime = ti.ElapsedTime ?? TimeSpan.Zero,
                     Points = ti.TestTaskInstance.Count(tti => tti.Correct),
+                    Started = ti.Started,
                     Finished = ti.Finished,
                     Checked = ti.TestTaskInstance.All(tti => tti.Checked)
                 })
@@ -294,6 +298,7 @@ namespace GeoQuest.Repositories.Implementation
                 Name = testInstanceBase.Test.Name,
                 Description = testInstanceBase.Test.Description,
                 Subject = testInstanceBase.Test.Subject.Name,
+                FinishedByStudentsInstanceCount = finishedByStudentsInstanceCount,
                 FinishedInstanceCount = finishedInstanceCount,
                 InstanceCount = instanceCount,
                 Active = active,
@@ -323,6 +328,40 @@ namespace GeoQuest.Repositories.Implementation
             await _context.SaveChangesAsync();
 
             return _test.Id;
+        }
+
+        public async Task<Test> GetTestByTestInstanceId(int testInstanceId, int studentId)
+        {
+            var _testInstance = await _context.TestInstance
+                .Include(ti => ti.TestInstanceBase)
+                .Include(ti => ti.TestInstanceBase.Test)
+                .FirstOrDefaultAsync(ti => ti.Id == testInstanceId && ti.StudentId == studentId);
+
+            if (_testInstance is null)
+            {
+                throw new Exception($"Problems getting data");
+            }
+            else
+            {
+                var _test = await _context.Test
+                       .Include(t => t.Subject)
+                       .Include(t => t.Subject.Student)
+                       .Include(t => t.TestTask)
+                       .FirstOrDefaultAsync(t => t.Id == _testInstance.TestInstanceBase.TestId);
+
+
+
+                if (_test is null)
+                {
+                    throw new Exception($"Problems getting data");
+                }
+                else
+                {
+                    return _test;
+                }
+
+
+            }
         }
     }
 }

@@ -80,5 +80,13 @@ namespace GeoQuest.Services.Implementation
             return _test.AsTestDto();
         }
 
+        public async Task<TestDto> GetTestByTestInstanceId(int testInstanceId)
+        {
+            var test = await _testRepository.GetTestByTestInstanceId(testInstanceId, _userContext.Id);
+
+            var testDto = test.AsTestDto();
+
+            return testDto;
+        }
     }
 }

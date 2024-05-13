@@ -6,6 +6,7 @@ namespace GeoQuest.DTOs
     {
         public int TestInstanceId { get; set; }
         public string Student { get; set; }
+        public string Description { get; set; }
         public string TestName { get; set; }
         public bool AllChecked { get; set; }
         public int TestTotalPoints { get; set; }

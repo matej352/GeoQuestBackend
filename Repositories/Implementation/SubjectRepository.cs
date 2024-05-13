@@ -77,7 +77,7 @@ namespace GeoQuest.Repositories.Implementation
                         Duration = ti.Test.Duration,
                         Name = ti.Test.Name,
                         Description = ti.Test.Description,
-                        FinishedInstanceCount = ti.TestInstance.Count(ti => ti.Finished),
+                        FinishedByStudentInstanceCount = ti.TestInstance.Count(ti => ti.Started && ti.Finished),
                         InstanceCount = ti.InstancesCount,
                         Active = ti.Active
                     }).ToList()

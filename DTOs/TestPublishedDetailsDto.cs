@@ -13,6 +13,7 @@
         public string Subject { get; set; }
 
         public int FinishedInstanceCount { get; set; }
+        public int FinishedByStudentsInstanceCount { get; set; }
 
         public int InstanceCount { get; set; }
 
@@ -43,6 +44,8 @@
         public int Points { get; set; }
 
         public bool Finished { get; set; }
+
+        public bool Started { get; set; }
 
         public bool Checked { get; set; }
 

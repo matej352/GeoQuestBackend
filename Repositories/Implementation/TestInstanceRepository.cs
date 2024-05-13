@@ -33,7 +33,7 @@ namespace GeoQuest.Repositories.Implementation
                 .Include(t => t.TestInstanceBase.Test)
                 .Include(t => t.TestInstanceBase.Test.Teacher)
                 .Include(t => t.TestInstanceBase.Test.Subject)
-                .Where(t => t.StudentId == studentId && t.Started == true && t.Finished == true).ToListAsync();
+                .Where(t => t.StudentId == studentId && t.Finished == true).ToListAsync();
             }
             else
             {
@@ -130,11 +130,12 @@ namespace GeoQuest.Repositories.Implementation
                                             {
                                                 TestInstanceId = ti.Id,
                                                 TestName = ti.TestInstanceBase.Test.Name,
+                                                Description = ti.TestInstanceBase.Test.Description,
                                                 Student = ti.Student.FirstName + " " + ti.Student.LastName,
                                                 AllChecked = ti.TestTaskInstance.All(tti => tti.Checked) ? true : false,
                                                 StudentTotalPoints = ti.TestTaskInstance.Count(tt => tt.Correct),    // Each correct task is 1 point,
                                                 TestTotalPoints = ti.TestTaskInstance.Count(),    // Each correct task is 1 point
-                                                SuccessPercentage = (double)ti.TestTaskInstance.Count(tt => tt.Checked && tt.Correct) / ti.TestTaskInstance.Count(tt => tt.Checked) * 100,
+                                                SuccessPercentage = (double)ti.TestTaskInstance.Count(tt => tt.Checked && tt.Correct) / (Math.Max(ti.TestTaskInstance.Count(tt => tt.Checked), 1)) * 100,
                                                 TestTasks = ti.TestTaskInstance.Select(tti => new TestTaskResultDto
                                                 {
                                                     Id = tti.Id,

@@ -14,7 +14,7 @@
 
         public string Subject { get; set; }
 
-        public int FinishedInstanceCount { get; set; }
+        public int FinishedByStudentInstanceCount { get; set; }
 
         public int InstanceCount { get; set; }
 
