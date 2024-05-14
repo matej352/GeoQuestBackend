@@ -273,7 +273,7 @@ namespace GeoQuest.Repositories.Implementation
             var distance = correctAnswerPoint.Distance(studentAnswerPoint);
 
             // Define the maximum allowed distance (radius) around the correct answer point
-            var maxDistanceInDegrees = 0.3; // For example, 0.3 degrees --> 111,000 meters per degree, so 0.3 * 111km = 33.3km   (10km, 30km, 50km, 100km)
+            var maxDistanceInDegrees = 0.1; // For example, 0.3 degrees --> 111,000 meters per degree, so 0.3 * 111km = 33.3km   (10km, 30km, 50km, 100km)
 
 
 
