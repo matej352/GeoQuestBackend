@@ -38,6 +38,22 @@ namespace GeoQuest.Controllers
 
         [Authorize(Roles = "Teacher")]
         [HttpGet]
+        [Route("Subjects/List")]
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> SubjectsList()
+        {
+
+            var subjects = await _subjectService.GetSubjects(_userContext.Id);
+
+            if (subjects.Count() == 0)
+            {
+                return Ok(null);
+            }
+
+            return Ok(subjects);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
         [Route("Subject")]
         public async Task<ActionResult<SubjectDetailsDto>> Subject(int subjectId)
         {
