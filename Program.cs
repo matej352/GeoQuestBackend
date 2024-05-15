@@ -45,8 +45,8 @@ builder.Services.AddCors(c =>
         options.AllowCredentials()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("http://localhost:4200", "http://localhost:4300")
-    // .AllowAnyOrigin()
+            .WithOrigins("http://localhost:4200", "https://geoquestapp.azurewebsites.net")
+    //.AllowAnyOrigin()
     );
 });
 
