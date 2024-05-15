@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "GeoQuestCookie";
         options.Cookie.SameSite = SameSiteMode.None;
-        options.Cookie.HttpOnly = false;
+        options.Cookie.HttpOnly = true;
         options.Events = new CookieAuthenticationEvents
         {
             OnRedirectToLogin = context =>
