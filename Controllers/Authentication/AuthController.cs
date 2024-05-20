@@ -50,7 +50,7 @@ namespace GeoQuest.Controllers.Authentication
             {
                 IsPersistent = true,
                 AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(45) // Set the expiration time here (e.g., 45 minutes from now)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(120) // Set the expiration time here (e.g., 45 minutes from now)
             });
 
             response.Message = "Prijava uspješna";
